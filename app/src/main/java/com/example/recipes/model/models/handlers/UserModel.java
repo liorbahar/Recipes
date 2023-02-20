@@ -8,12 +8,14 @@ import androidx.core.os.HandlerCompat;
 import com.example.recipes.model.database.handlers.UserFirebaseHandler;
 
 public class UserModel {
-    private Executor executor = Executors.newSingleThreadExecutor();
-    private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
-    private UserFirebaseHandler dbUser = new UserFirebaseHandler();
-//    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
+    private Executor executor;
+    private Handler mainHandler;
+    private final UserFirebaseHandler dbUser;
+    //AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     public UserModel(){
-
+        this.dbUser = new UserFirebaseHandler();
+        this.mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
+        this.executor = Executors.newSingleThreadExecutor();
     }
 
     public void AddUser(){
