@@ -1,7 +1,7 @@
-package com.example.recipes.model.models;
+package com.example.recipes.helper.models;
 
 
-import com.example.recipes.model.models.handlers.UserModel;
+import com.example.recipes.helper.models.handlers.UserModel;
 
 public class ModelClient {
     private static final ModelClient _instance = new ModelClient();

@@ -1,11 +1,11 @@
-package com.example.recipes.model.models.handlers;
+package com.example.recipes.helper.models.handlers;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.core.os.HandlerCompat;
-import com.example.recipes.model.database.handlers.UserFirebaseHandler;
+import com.example.recipes.database.UserFirebaseHandler;
 
 public class UserModel {
     private Executor executor;
@@ -16,9 +16,5 @@ public class UserModel {
         this.dbUser = new UserFirebaseHandler();
         this.mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
         this.executor = Executors.newSingleThreadExecutor();
-    }
-
-    public void AddUser(){
-        this.dbUser.AddUser();
     }
 }

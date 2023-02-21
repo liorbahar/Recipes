@@ -1,6 +1,6 @@
-package com.example.recipes.model.database.handlers;
+package com.example.recipes.database;
 
-import com.example.recipes.model.database.handlers.interfaces.IRecipesDBHandler;
+import com.example.recipes.database.interfaces.IRecipesDBHandler;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.storage.FirebaseStorage;

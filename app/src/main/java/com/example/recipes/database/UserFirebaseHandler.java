@@ -1,10 +1,10 @@
-package com.example.recipes.model.database.handlers;
+package com.example.recipes.database;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.recipes.model.database.handlers.interfaces.IUserDBHandler;
+import com.example.recipes.database.interfaces.IUserDBHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
