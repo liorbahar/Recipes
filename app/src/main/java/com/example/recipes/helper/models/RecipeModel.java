@@ -4,6 +4,7 @@ import java.util.concurrent.Executor;
 
 import android.os.Handler;
 
+import com.example.recipes.database.RecipesFirebaseHandler;
 import com.example.recipes.helper.models.interfaces.IRecipeModel;
 import com.example.recipes.localdatabase.AppLocalDbRepository;
 import com.example.recipes.models.Recipe;
@@ -14,6 +15,7 @@ public class RecipeModel implements IRecipeModel {
     private final Executor executor;
     private final Handler mainHandler;
     private final AppLocalDbRepository localDb;
+    private RecipesFirebaseHandler recipesFirebaseHandler = new RecipesFirebaseHandler();
 
     public RecipeModel(Handler mainHandler, Executor executor, AppLocalDbRepository localDb) {
         this.mainHandler = mainHandler;
@@ -37,9 +39,7 @@ public class RecipeModel implements IRecipeModel {
     }
 
     public void addRecipe(Recipe recipe, AddRecipeListener listener) {
-        executor.execute(() -> {
-            localDb.recipesDao().insertAll(recipe);
-            mainHandler.post(() -> listener.onComplete());
-        });
+        recipesFirebaseHandler.addRecipe(recipe,listener);
+
     }
 }

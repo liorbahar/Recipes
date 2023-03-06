@@ -39,7 +39,7 @@ public class Recipe {
     static final String NAME = "name";
     static final String BODY = "body";
     static final String AVATAR = "avatar";
-    static final String COLLECTION = "recipes";
+    public static final String COLLECTION = "recipes";
     static final String LAST_UPDATED = "lastUpdated";
     static final String LOCAL_LAST_UPDATED = "recipes_local_last_update";
 
