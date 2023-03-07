@@ -4,17 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".fragments.RecipesListFragment">
 
-    <FrameLayout
-        android:id="@+id/main_fragment_container"
-        android:layout_width="424dp"
-        android:layout_height="729dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipes_list_fragment_ls"
+        android:layout_width="371dp"
+        android:layout_height="663dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </FrameLayout>
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
