@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.UUID;
 
 import android.graphics.Bitmap;
@@ -64,10 +63,12 @@ public class BasePutRecipeFragment extends Fragment {
         View view = binding.getRoot();
 
         binding.saveBtn.setOnClickListener(view1 -> {
+
             String name = binding.basePutRecipeNameEt.getText().toString();
             String body = binding.basePutRecipeBodyEt.getText().toString();
             String uniqueID = UUID.randomUUID().toString();
-            Recipe recipe = new Recipe(uniqueID, name, body, "");
+            String userId = UUID.randomUUID().toString(); //change when have login user
+            Recipe recipe = new Recipe(uniqueID, name, body,userId, "");
 
             if (isAvatarSelected) {
                 binding.addrecipeAvatarImv.setDrawingCacheEnabled(true);
