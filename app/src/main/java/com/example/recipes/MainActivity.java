@@ -3,8 +3,6 @@ package com.example.recipes;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.recipes.helper.models.ModelClient;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override

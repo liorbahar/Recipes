@@ -2,6 +2,7 @@ package com.example.recipes.helper.models;
 
 import java.util.concurrent.Executor;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 
 import com.example.recipes.database.RecipesFirebaseHandler;
@@ -33,13 +34,11 @@ public class RecipeModel implements IRecipeModel {
             mainHandler.post(() -> callback.onComplete(data));
         });
     }
-
-    public interface AddRecipeListener {
-        void onComplete();
+    public void addRecipe(Recipe recipe, ModelClient.Listener listener) {
+        recipesFirebaseHandler.addRecipe(recipe,listener);
     }
 
-    public void addRecipe(Recipe recipe, AddRecipeListener listener) {
-        recipesFirebaseHandler.addRecipe(recipe,listener);
-
+    public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {
+        recipesFirebaseHandler.uploadImage(name, bitmap, listener);
     }
 }

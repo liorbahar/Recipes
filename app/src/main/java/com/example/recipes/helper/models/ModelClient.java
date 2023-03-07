@@ -1,6 +1,5 @@
 package com.example.recipes.helper.models;
 
-
 import android.os.Handler;
 import android.os.Looper;
 
@@ -23,6 +22,10 @@ public class ModelClient {
 
     public static ModelClient instance() {
         return _instance;
+    }
+
+    public interface Listener<T> {
+        void onComplete(T data);
     }
 
     private ModelClient() {
