@@ -12,11 +12,12 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-public class Recipe {
+public class Recipe implements Serializable {
     @PrimaryKey
     @NonNull
     public String id = "";
