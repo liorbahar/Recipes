@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface IRecipeModel {
     LiveData<List<Recipe>> getAllRecipes();
+
+    LiveData<List<Recipe>> getUserRecipes(String userId);
 }

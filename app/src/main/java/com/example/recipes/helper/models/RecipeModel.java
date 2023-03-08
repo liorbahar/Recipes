@@ -19,6 +19,8 @@ public class RecipeModel implements IRecipeModel {
     private final AppLocalDbRepository localDb;
     private RecipesFirebaseHandler recipesFirebaseHandler = new RecipesFirebaseHandler();
     private LiveData<List<Recipe>> recipesList;
+    private LiveData<List<Recipe>> userRecipesList;
+
 
 
     public RecipeModel(Handler mainHandler, Executor executor, AppLocalDbRepository localDb) {
@@ -29,6 +31,24 @@ public class RecipeModel implements IRecipeModel {
 
     public interface GetAllRecipesListener {
         void onComplete(List<Recipe> data);
+    }
+
+    public LiveData<List<Recipe>> getUserRecipes(String userId) {
+        if (this.userRecipesList == null){
+            this.userRecipesList = this.localDb.recipesDao().getRecipesByUserId(userId);
+            this.refreshUserRecipes(userId);
+        }
+        return this.userRecipesList;
+    }
+
+    public void refreshUserRecipes(String userId){
+        this.recipesFirebaseHandler.getRecipesOfUser(userId,(List<Recipe> recipes) -> {
+            executor.execute(() -> {
+                for(Recipe recipe:recipes){
+                    localDb.recipesDao().insertAll(recipe);
+                }
+            });
+        });
     }
 
     public LiveData<List<Recipe>> getAllRecipes() {
@@ -48,14 +68,4 @@ public class RecipeModel implements IRecipeModel {
             });
         });
     }
-
-//    public void getAllRecipes(GetAllRecipesListener callback) {
-//        executor.execute(() -> {
-////            List<Recipe> data = localDb.recipesDao().getAll();
-//            this.recipesFirebaseHandler.getAllRecipes(data1 -> {
-//                mainHandler.post(() -> callback.onComplete(data1));
-//            });
-//
-//        });
-//    }
 }

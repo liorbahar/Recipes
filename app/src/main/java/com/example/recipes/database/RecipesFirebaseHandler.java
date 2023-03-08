@@ -47,4 +47,24 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler{
                     }
                 });
     }
+
+    public void getRecipesOfUser(String userId, RecipeModel.GetAllRecipesListener callback) {
+        db.collection(Recipe.COLLECTION)
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Recipe> list = new LinkedList<>();
+                        if (task.isSuccessful()){
+                            QuerySnapshot jsonsList = task.getResult();
+                            for (DocumentSnapshot json: jsonsList){
+                                Recipe st = Recipe.fromJson(json.getData());
+                                list.add(st);
+                            }
+                        }
+                        callback.onComplete(list);
+                    }
+                });
+    }
 }

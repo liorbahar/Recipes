@@ -12,37 +12,39 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-public class Recipe implements Serializable {
+public class Recipe {
     @PrimaryKey
     @NonNull
     public String id = "";
+    @NonNull
     public String name = "";
+    @NonNull
     public String body = "";
+    public String userId = "";
     public String avatarUrl = "";
+
     public Long lastUpdated;
-//    public String owner;
 
     public Recipe() {
     }
 
-    public Recipe(@NonNull String id, String name, String body, String avatarUrl) {
+    public Recipe(@NonNull String id, @NonNull String name, @NonNull String body, String userId, String avatarUrl) {
         this.id = id;
         this.name = name;
         this.body = body;
+        this.userId = userId;
         this.avatarUrl = avatarUrl;
-//        this.owner = owner;
     }
 
     static final String ID = "id";
     static final String NAME = "name";
     static final String BODY = "body";
+    static final String USERID = "userId";
     static final String AVATAR = "avatar";
-    static final String OWNER = "owner";
     public static final String COLLECTION = "recipes";
     static final String LAST_UPDATED = "lastUpdated";
     static final String LOCAL_LAST_UPDATED = "recipes_local_last_update";
@@ -51,12 +53,13 @@ public class Recipe implements Serializable {
         String id = (String) json.get(ID);
         String name = (String) json.get(NAME);
         String body = (String) json.get(BODY);
+        String userId = (String) json.get(USERID);
         String avatar = (String) json.get(AVATAR);
-//        String owner = (String) json.get(OWNER);
-        Recipe recipe = new Recipe(id, name, body, avatar);
+        Recipe recipe = new Recipe(id, name, body, userId, avatar);
         try {
             Timestamp time = (Timestamp) json.get(LAST_UPDATED);
             recipe.setLastUpdated(time.getSeconds());
+
         } catch (Exception e) {
 
         }
@@ -80,6 +83,7 @@ public class Recipe implements Serializable {
         json.put(ID, getId());
         json.put(NAME, getName());
         json.put(BODY, getBody());
+        json.put(USERID, getUserId());
         json.put(AVATAR, getAvatarUrl());
         json.put(LAST_UPDATED, FieldValue.serverTimestamp());
         return json;
@@ -97,6 +101,10 @@ public class Recipe implements Serializable {
         this.body = body;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
@@ -110,9 +118,9 @@ public class Recipe implements Serializable {
         return name;
     }
 
-    public String getBody() {
-        return body;
-    }
+    public String getBody() { return body;}
+
+    public String getUserId() { return userId;}
 
     public String getAvatarUrl() {
         return avatarUrl;

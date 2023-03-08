@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.example.recipes.fragments.RecipesListFragment;
 import com.example.recipes.fragments.RecipesListPageFragment;
+import com.example.recipes.fragments.UserRecipesListPageFragment;
 import com.example.recipes.helper.models.ModelClient;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecipesListPageFragment myFrag = new RecipesListPageFragment();
+        //RecipesListPageFragment myFrag = new RecipesListPageFragment();
+        UserRecipesListPageFragment myFrag = new UserRecipesListPageFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction tran = manager.beginTransaction();
 

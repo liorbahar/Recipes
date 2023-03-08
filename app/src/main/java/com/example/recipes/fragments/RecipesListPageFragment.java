@@ -46,7 +46,7 @@ public class RecipesListPageFragment extends Fragment {
             }
             this.recipesListFragment.setRecipes(this.recipes);
             Bundle bundle = new Bundle();
-            bundle.putBoolean("hasAccess", true);
+            bundle.putBoolean("hasAccess", false);
             this.recipesListFragment.setArguments(bundle);
         });
 
