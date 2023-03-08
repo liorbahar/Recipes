@@ -26,8 +26,11 @@ public class ModelClient {
     public static ModelClient instance(){
         return _instance;
     }
-    private ModelClient(){
 
+    public interface Listener<T> {
+        void onComplete(T data);
+    }
+    private ModelClient(){
         this.users = new UserModel(mainHandler, executor, localDb);
         this.recipes = new RecipeModel(mainHandler, executor, localDb);
     }

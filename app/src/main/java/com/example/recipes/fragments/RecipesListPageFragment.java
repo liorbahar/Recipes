@@ -41,7 +41,7 @@ public class RecipesListPageFragment extends Fragment {
                 getFragmentManager().executePendingTransactions();
                 this.recipesListFragment = new RecipesListFragment();
                 FragmentTransaction tran = manager.beginTransaction();
-                tran.add(R.id.main_fragment_container, this.recipesListFragment);
+               // tran.add(R.id.main_fragment_container, this.recipesListFragment);
                 tran.commit();
             }
             this.recipesListFragment.setRecipes(this.recipes);
