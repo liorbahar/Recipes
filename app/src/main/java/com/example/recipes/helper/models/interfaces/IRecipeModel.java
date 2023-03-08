@@ -1,8 +1,13 @@
 package com.example.recipes.helper.models.interfaces;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.recipes.helper.models.RecipeModel;
+import com.example.recipes.models.Recipe;
+
+import java.util.List;
 
 
 public interface IRecipeModel {
-    void getAllRecipes(RecipeModel.GetAllRecipesListener callback);
+    LiveData<List<Recipe>> getAllRecipes();
 }

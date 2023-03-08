@@ -13,38 +13,41 @@ import android.view.ViewGroup;
 
 import com.example.recipes.R;
 import com.example.recipes.helper.models.ModelClient;
+import com.example.recipes.models.Recipe;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipesListPageFragment extends Fragment {
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-    }
+    private List<Recipe> recipes = new ArrayList<>();
+    private RecipesListFragment recipesListFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipes_list_page, container, false);
+        FragmentManager manager = getActivity().getSupportFragmentManager();
 
-        ModelClient.instance().recipes.getAllRecipes(recipes -> {
-            RecipesListFragment myFrag = new RecipesListFragment();
-            myFrag.setRecipes(recipes);
+        ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
+            this.recipes = recipes;
+
+            if (this.recipesListFragment == null){
+                this.recipesListFragment = new RecipesListFragment();
+            }
+
+            if (!this.recipesListFragment.isAdded()) {
+                getFragmentManager().executePendingTransactions();
+                this.recipesListFragment = new RecipesListFragment();
+                FragmentTransaction tran = manager.beginTransaction();
+                tran.add(R.id.main_fragment_container, this.recipesListFragment);
+                tran.commit();
+            }
+            this.recipesListFragment.setRecipes(this.recipes);
             Bundle bundle = new Bundle();
-            bundle.putBoolean("hasAccess",true);
-            myFrag.setArguments(bundle);
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            FragmentTransaction tran = manager.beginTransaction();
-            tran.add(R.id.main_fragment_container, myFrag);
-            tran.commit();
-
+            bundle.putBoolean("hasAccess", true);
+            this.recipesListFragment.setArguments(bundle);
         });
 
         return view;
