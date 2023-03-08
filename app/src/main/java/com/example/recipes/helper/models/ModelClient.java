@@ -20,11 +20,15 @@ public class ModelClient {
     private AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
     public UserModel users;
+    public RecipeModel recipes;
+
 
     public static ModelClient instance(){
         return _instance;
     }
     private ModelClient(){
+
         this.users = new UserModel(mainHandler, executor, localDb);
+        this.recipes = new RecipeModel(mainHandler, executor, localDb);
     }
 }
