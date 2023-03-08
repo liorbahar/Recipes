@@ -14,9 +14,8 @@ import java.util.List;
 
 public class RecipesListFragment extends Fragment {
     private List<Recipe> recipes = new ArrayList<>();
-    private List<Recipe> originalRecipes;
     private Boolean hasAccess = true;
-    FragmentRecipesListBinding binding;
+    private FragmentRecipesListBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class RecipesListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String recipeNameSearch) {
                 List<Recipe> matchRecipes = searchRecipesByName(recipeNameSearch);
-                //recipes = matchRecipes;
                 RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), matchRecipes, hasAccess);
                 binding.recipesListFragmentLs.setAdapter(adapter);
                 return true;
@@ -52,7 +50,6 @@ public class RecipesListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String recipeNameSearch) {
                 List<Recipe> matchRecipes = searchRecipesByName(recipeNameSearch);
-                //recipes = matchRecipes;
                 RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), matchRecipes, hasAccess);
                 binding.recipesListFragmentLs.setAdapter(adapter);
                 return true;
@@ -75,8 +72,6 @@ public class RecipesListFragment extends Fragment {
 
     public void setRecipes(List<Recipe> recipes){
         this.recipes = recipes;
-        this.originalRecipes = recipes;
-
     }
 
 }
