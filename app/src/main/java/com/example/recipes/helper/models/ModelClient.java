@@ -1,5 +1,6 @@
 package com.example.recipes.helper.models;
 
+
 import android.os.Handler;
 import android.os.Looper;
 
@@ -16,20 +17,17 @@ public class ModelClient {
 
     private Executor executor = Executors.newSingleThreadExecutor();
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
+    private AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
     public UserModel users;
     public RecipeModel recipes;
 
-    public static ModelClient instance() {
+
+    public static ModelClient instance(){
         return _instance;
     }
+    private ModelClient(){
 
-    public interface Listener<T> {
-        void onComplete(T data);
-    }
-
-    private ModelClient() {
-        AppLocalDbRepository localDb = AppLocalDb.getAppDb();
         this.users = new UserModel(mainHandler, executor, localDb);
         this.recipes = new RecipeModel(mainHandler, executor, localDb);
     }

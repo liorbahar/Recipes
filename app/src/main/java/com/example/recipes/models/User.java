@@ -9,6 +9,7 @@ import java.util.Map;
 
 import kotlin.NotImplementedError;
 
+
 @Entity
 public class User {
     @PrimaryKey
@@ -17,7 +18,8 @@ public class User {
     public String name = "";
     public static String COLLECTION_NAME = "users";
 
-    public Map<String, Object> toJson() {
+    public User(){}
+    public Map<String, Object> toJson(){
         Map<String, Object> json = new HashMap<>();
         // example:
         // json.put("first", "Ada");
@@ -26,7 +28,7 @@ public class User {
         return json;
     }
 
-    public User fromJson(Map<String, Object> json) {
+    public User fromJson(Map<String, Object> json){
         throw new NotImplementedError();
     }
 }

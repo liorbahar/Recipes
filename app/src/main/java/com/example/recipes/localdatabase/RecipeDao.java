@@ -1,7 +1,7 @@
 package com.example.recipes.localdatabase;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -13,14 +13,12 @@ import java.util.List;
 @Dao
 public interface RecipeDao {
     @Query("select * from Recipe")
-    List<Recipe> getAll();
-
-    @Query("select * from Recipe where id = :recipeId")
-    Recipe getRecipeById(String recipeId);
+    LiveData<List<Recipe>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Recipe... recipes);
 
-    @Delete
-    void delete(Recipe recipe);
+    @Query("select * from Recipe where userId = :userId")
+    LiveData<List<Recipe>> getRecipesByUserId(String userId);
+
 }

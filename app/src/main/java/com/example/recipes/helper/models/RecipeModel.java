@@ -5,6 +5,8 @@ import java.util.concurrent.Executor;
 import android.graphics.Bitmap;
 import android.os.Handler;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.recipes.database.RecipesFirebaseHandler;
 import com.example.recipes.helper.models.interfaces.IRecipeModel;
 import com.example.recipes.localdatabase.AppLocalDbRepository;
@@ -17,6 +19,10 @@ public class RecipeModel implements IRecipeModel {
     private final Handler mainHandler;
     private final AppLocalDbRepository localDb;
     private RecipesFirebaseHandler recipesFirebaseHandler = new RecipesFirebaseHandler();
+    private LiveData<List<Recipe>> recipesList;
+    private LiveData<List<Recipe>> userRecipesList;
+
+
 
     public RecipeModel(Handler mainHandler, Executor executor, AppLocalDbRepository localDb) {
         this.mainHandler = mainHandler;
@@ -28,17 +34,46 @@ public class RecipeModel implements IRecipeModel {
         void onComplete(List<Recipe> data);
     }
 
-    public void getAllRecipes(GetAllRecipesListener callback) {
-        executor.execute(() -> {
-            List<Recipe> data = localDb.recipesDao().getAll();
-            mainHandler.post(() -> callback.onComplete(data));
-        });
+    public LiveData<List<Recipe>> getUserRecipes(String userId) {
+        if (this.userRecipesList == null){
+            this.userRecipesList = this.localDb.recipesDao().getRecipesByUserId(userId);
+            this.refreshUserRecipes(userId);
+        }
+        return this.userRecipesList;
     }
+
     public void addRecipe(Recipe recipe, ModelClient.Listener listener) {
         recipesFirebaseHandler.addRecipe(recipe,listener);
     }
 
     public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {
         recipesFirebaseHandler.uploadImage(name, bitmap, listener);
+    }
+    public void refreshUserRecipes(String userId){
+        this.recipesFirebaseHandler.getRecipesOfUser(userId,(List<Recipe> recipes) -> {
+            executor.execute(() -> {
+                for(Recipe recipe:recipes){
+                    localDb.recipesDao().insertAll(recipe);
+                }
+            });
+        });
+    }
+
+    public LiveData<List<Recipe>> getAllRecipes() {
+        if (this.recipesList == null) {
+            this.recipesList = this.localDb.recipesDao().getAll();
+            this.refreshAllRecipes();
+        }
+        return this.recipesList;
+    }
+
+    public void refreshAllRecipes(){
+        this.recipesFirebaseHandler.getAllRecipes((List<Recipe> recipes) -> {
+            executor.execute(() -> {
+                for(Recipe recipe:recipes){
+                    localDb.recipesDao().insertAll(recipe);
+                }
+            });
+        });
     }
 }
