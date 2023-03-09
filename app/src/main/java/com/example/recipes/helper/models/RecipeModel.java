@@ -2,6 +2,7 @@ package com.example.recipes.helper.models;
 
 import java.util.concurrent.Executor;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 
 import androidx.lifecycle.LiveData;
@@ -41,6 +42,13 @@ public class RecipeModel implements IRecipeModel {
         return this.userRecipesList;
     }
 
+    public void addRecipe(Recipe recipe, ModelClient.Listener listener) {
+        recipesFirebaseHandler.addRecipe(recipe,listener);
+    }
+
+    public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {
+        recipesFirebaseHandler.uploadImage(name, bitmap, listener);
+    }
     public void refreshUserRecipes(String userId){
         this.recipesFirebaseHandler.getRecipesOfUser(userId,(List<Recipe> recipes) -> {
             executor.execute(() -> {
