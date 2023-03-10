@@ -42,14 +42,13 @@ public class RecipesListFragment extends Fragment {
         binding.recipesListFragmentLs.setLayoutManager(new LinearLayoutManager(getContext()));
         RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
         binding.recipesListFragmentLs.setAdapter(adapter);
-
         adapter.setOnItemClickListener(new RecipeRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String recipeId) {
-                try {
+                if (hasAccess) {
                     UserRecipesListPageFragmentDirections.ActionUserRecipesListFragmentToViewRecipesFragment action = UserRecipesListPageFragmentDirections.actionUserRecipesListFragmentToViewRecipesFragment(recipeId);
                     Navigation.findNavController(view).navigate(action);
-                }catch(Exception ex){
+                } else {
                     RecipesListPageFragmentDirections.ActionRecipesListPageFragmentToViewRecipesFragment action1 = RecipesListPageFragmentDirections.actionRecipesListPageFragmentToViewRecipesFragment(recipeId);
                     Navigation.findNavController(view).navigate(action1);
                 }

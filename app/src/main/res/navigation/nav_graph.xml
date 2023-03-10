@@ -5,12 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/recipesListPageFragment">
     <fragment
-        android:id="@+id/recipesListFragment"
-        android:name="com.example.recipes.fragments.RecipesListFragment"
-        android:label="Recipes List"
-        tools:layout="@layout/recipe_list_recipe">
-    </fragment>
-    <fragment
         android:id="@+id/recipesListPageFragment"
         android:name="com.example.recipes.fragments.RecipesListPageFragment"
         android:label="All Recipes List"

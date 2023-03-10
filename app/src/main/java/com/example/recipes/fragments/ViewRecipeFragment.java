@@ -32,7 +32,7 @@ public class ViewRecipeFragment extends Fragment {
         binding = FragmentViewRecipeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        String recipeId = UserRecipesListPageFragmentArgs.fromBundle(getArguments()).getRecipeId();
+        String recipeId = getArguments().getString("recipeId");
         Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
         showRecipeDetails(data, binding);
 

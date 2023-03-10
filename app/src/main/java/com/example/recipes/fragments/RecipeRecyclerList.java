@@ -21,7 +21,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
     List<Recipe> recipes;
     Boolean hasAccess;
 
-    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener,RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
+    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener, RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
         super(itemView);
         this.recipes = recipes;
         this.hasAccess = hasAccess;
@@ -33,18 +33,14 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = getAdapterPosition();
-                Recipe recipe = recipes.get(pos);
-                listener.onItemClick(recipe.id);
+                listener.onItemClick(getRecipeByPosition());
             }
         });
 
         editRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = getAdapterPosition();
-                Recipe recipe = recipes.get(pos);
-                listenerEdit.onItemClick(recipe.id);
+                listenerEdit.onItemClick(getRecipeByPosition());
             }
         });
     }
@@ -55,6 +51,11 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         int RecipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
         deleteRecipeBtn.setVisibility(RecipeActionsStatus);
         editRecipeBtn.setVisibility(RecipeActionsStatus);
+    }
+
+    private String getRecipeByPosition() {
+        int pos = getAdapterPosition();
+        return recipes.get(pos).id;
     }
 }
 
@@ -83,6 +84,7 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
     void setOnEditButtonClickListener(OnEditButtonClickListener listenerEdit) {
         this.listenerEdit = listenerEdit;
     }
@@ -91,7 +93,7 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recipe_list_recipe, parent, false);
-        return new RecipeViewHolder(view, listener,listenerEdit, recipes, hasAccess);
+        return new RecipeViewHolder(view, listener, listenerEdit, recipes, hasAccess);
     }
 
     @Override
