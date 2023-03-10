@@ -2,9 +2,9 @@ package com.example.recipes.fragments;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentBasePutRecipeBinding;
+import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
-import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,7 +24,6 @@ import java.util.UUID;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -95,14 +94,8 @@ public class BasePutRecipeFragment extends Fragment {
     private Void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
         binding.basePutRecipeBodyEt.setText(recipe.getBody());
+        ImageHelper.insertImageByUrl(recipe,binding.addrecipeAvatarImv);
 
-        ImageView avatarImage = binding.addrecipeAvatarImv;
-
-        if (!recipe.getAvatarUrl().equals("")) {
-            Picasso.get().load(recipe.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(avatarImage);
-        } else {
-            avatarImage.setImageResource(R.drawable.add_image_avatar);
-        }
         return null;
     }
 

@@ -4,12 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipes.R;
+import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.models.Recipe;
 import java.util.List;
 
@@ -20,6 +22,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
     ImageButton editRecipeBtn;
     List<Recipe> recipes;
     Boolean hasAccess;
+    ImageView recipeImage;
 
     public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener, RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
         super(itemView);
@@ -29,6 +32,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         recipeOwner = itemView.findViewById(R.id.recipe_list_recipe_owner);
         deleteRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_delete_btn);
         editRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_edit_btn);
+        recipeImage = itemView.findViewById(R.id.recipe_list_recipe_image);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +55,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         int RecipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
         deleteRecipeBtn.setVisibility(RecipeActionsStatus);
         editRecipeBtn.setVisibility(RecipeActionsStatus);
+        ImageHelper.insertImageByUrl(recipe,recipeImage);
     }
 
     private String getRecipeByPosition() {
