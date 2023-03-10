@@ -1,8 +1,10 @@
 package com.example.recipes.fragments;
 
+import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentViewRecipeBinding;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class ViewRecipeFragment extends Fragment {
     FragmentViewRecipeBinding binding;
@@ -41,13 +44,14 @@ public class ViewRecipeFragment extends Fragment {
         //binding.recipeCreatorNameTv.setText(recipe.getUserId()); //get userId name from user collection
         binding.recipeBodyTv.setText(recipe.getBody());
 
-//        ImageView recipeImage = binding.recipeImage;
-//
-//        if (recipe.getAvatarUrl() != "") {
-//            Picasso.get().load(recipe.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(recipeImage);
-//        } else {
-//            recipeImage.setImageResource(R.drawable.add_image_avatar);
-//        }
+        ImageView avatarImage = binding.recipeImage;
+
+        if (!recipe.getAvatarUrl().equals("")) {
+            Picasso.get().load(recipe.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(avatarImage);
+        } else {
+            avatarImage.setImageResource(R.drawable.add_image_avatar);
+        }
+
         return null;
     }
 }
