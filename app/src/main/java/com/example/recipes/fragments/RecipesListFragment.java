@@ -1,14 +1,20 @@
 package com.example.recipes.fragments;
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+
 import com.example.recipes.databinding.FragmentRecipesListBinding;
 import com.example.recipes.models.Recipe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +35,21 @@ public class RecipesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentRecipesListBinding.inflate(inflater,container,false);
+        binding = FragmentRecipesListBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         binding.recipesListFragmentLs.setHasFixedSize(true);
         binding.recipesListFragmentLs.setLayoutManager(new LinearLayoutManager(getContext()));
         RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
         binding.recipesListFragmentLs.setAdapter(adapter);
+
+        adapter.setOnEditButtonClickListener(new RecipeRecyclerAdapter.OnEditButtonClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+                RecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = RecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(pos);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
 
 
         binding.fragmentRecipesListSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -61,8 +75,7 @@ public class RecipesListFragment extends Fragment {
 
     private List<Recipe> searchRecipesByName(String recipeName) {
         List<Recipe> matchRecipes = new ArrayList<Recipe>();
-        for (Recipe recipe : this.recipes)
-        {
+        for (Recipe recipe : this.recipes) {
             if (recipe.name.contains(recipeName)) {
                 matchRecipes.add(recipe);
             }
@@ -70,7 +83,7 @@ public class RecipesListFragment extends Fragment {
         return matchRecipes;
     }
 
-    public void setRecipes(List<Recipe> recipes){
+    public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
     }
 

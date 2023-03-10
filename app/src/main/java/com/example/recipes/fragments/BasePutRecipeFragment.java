@@ -13,27 +13,32 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 import java.util.UUID;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.lifecycle.LiveData;
+import androidx.navigation.Navigation;
 
 public class BasePutRecipeFragment extends Fragment {
     FragmentBasePutRecipeBinding binding;
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
+    int recipesPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,33 +71,20 @@ public class BasePutRecipeFragment extends Fragment {
         binding = FragmentBasePutRecipeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        //get Recipe from parent when click
-        Recipe getRecipe = new Recipe("uniqueID", "name", "body", "userId", "https://firebasestorage.googleapis.com/v0/b/recipes-5fd46.appspot.com/o/images%2Fead52b5e-5f22-48e5-a2c7-593b679b171a.jpg?alt=media&token=1f5867d7-5d8a-4718-8b26-c2de5cac549b");
-        showRecipeDeatiels(getRecipe, binding);
+        try {
+            this.recipesPosition = RecipesListPageFragmentArgs.fromBundle(getArguments()).getPosition();
+            LiveData<List<Recipe>> data = ModelClient.instance().recipes.getAllRecipes();
+            Recipe getRecipe = data.getValue().get(this.recipesPosition);
+            showRecipeDeatiels(getRecipe, binding);
+        } catch (Exception e) {
+        }
 
         binding.saveBtn.setOnClickListener(view1 -> {
-            String name = binding.basePutRecipeNameEt.getText().toString();
-            String body = binding.basePutRecipeBodyEt.getText().toString();
-            String uniqueID = UUID.randomUUID().toString();
-            String userId = UUID.randomUUID().toString(); //change when have login user
-            Recipe recipe = new Recipe(uniqueID, name, body,userId, "");
-
-            if (isAvatarSelected) {
-                binding.addrecipeAvatarImv.setDrawingCacheEnabled(true);
-                binding.addrecipeAvatarImv.buildDrawingCache();
-                Bitmap bitmap = ((BitmapDrawable) binding.addrecipeAvatarImv.getDrawable()).getBitmap();
-                ModelClient.instance().recipes.uploadImage(uniqueID, bitmap, url -> {
-                    if (url != null) {
-                        recipe.setAvatarUrl(url);
-                    }
-                    ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
-                    });
-                });
-            } else {
-                ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
-                });
-            }
+            this.onSaveStudentClick(binding, view1);
         });
+
+        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.recipesListPageFragment, false));
+        setHasOptionsMenu(true);
 
         binding.cameraButton.setOnClickListener(view1 -> {
             cameraLauncher.launch(null);
@@ -104,10 +96,11 @@ public class BasePutRecipeFragment extends Fragment {
         return view;
     }
 
-    private Void showRecipeDeatiels(Recipe recipe,FragmentBasePutRecipeBinding binding){
+    private Void showRecipeDeatiels(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
-        binding.basePutRecipeBodyEt.setText(recipe.getBody());;
-        ImageView avatarImage =binding.addrecipeAvatarImv;
+        binding.basePutRecipeBodyEt.setText(recipe.getBody());
+        ;
+        ImageView avatarImage = binding.addrecipeAvatarImv;
 
         if (recipe.getAvatarUrl() != "") {
             Picasso.get().load(recipe.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(avatarImage);
@@ -115,5 +108,36 @@ public class BasePutRecipeFragment extends Fragment {
             avatarImage.setImageResource(R.drawable.add_image_avatar);
         }
         return null;
+    }
+
+    private void onSaveStudentClick(FragmentBasePutRecipeBinding binding, View view) {
+        String name = binding.basePutRecipeNameEt.getText().toString();
+        String body = binding.basePutRecipeBodyEt.getText().toString();
+        String uniqueID = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString(); //change when have login user
+        Recipe recipe = new Recipe(uniqueID, name, body, userId, "");
+
+        if (isAvatarSelected) {
+            binding.addrecipeAvatarImv.setDrawingCacheEnabled(true);
+            binding.addrecipeAvatarImv.buildDrawingCache();
+            Bitmap bitmap = ((BitmapDrawable) binding.addrecipeAvatarImv.getDrawable()).getBitmap();
+            ModelClient.instance().recipes.uploadImage(uniqueID, bitmap, url -> {
+                if (url != null) {
+                    recipe.setAvatarUrl(url);
+                }
+                ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
+                    Navigation.findNavController(view).popBackStack();
+                });
+            });
+        } else {
+            ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
+                Navigation.findNavController(view).popBackStack();
+            });
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
     }
 }

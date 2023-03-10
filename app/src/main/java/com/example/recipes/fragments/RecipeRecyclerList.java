@@ -3,7 +3,6 @@ package com.example.recipes.fragments;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -22,7 +21,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
     List<Recipe> recipes;
     Boolean hasAccess;
 
-    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener, List<Recipe> recipes, Boolean hasAccess) {
+    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener,RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
         super(itemView);
         this.recipes = recipes;
         this.hasAccess = hasAccess;
@@ -31,6 +30,21 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         deleteRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_delete_btn);
         editRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_edit_btn);
 
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = getAdapterPosition();
+                listener.onItemClick(pos);
+            }
+        });
+
+        editRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = getAdapterPosition();
+                listenerEdit.onItemClick(pos);
+            }
+        });
     }
 
     public void bind(Recipe recipe, int pos) {
@@ -44,8 +58,13 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
 
 class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     OnItemClickListener listener;
+    OnEditButtonClickListener listenerEdit;
 
     public static interface OnItemClickListener {
+        void onItemClick(int pos);
+    }
+
+    public static interface OnEditButtonClickListener {
         void onItemClick(int pos);
     }
 
@@ -62,12 +81,15 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+    void setOnEditButtonClickListener(OnEditButtonClickListener listenerEdit) {
+        this.listenerEdit = listenerEdit;
+    }
 
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recipe_list_recipe, parent, false);
-        return new RecipeViewHolder(view, listener, recipes, hasAccess);
+        return new RecipeViewHolder(view, listener,listenerEdit, recipes, hasAccess);
     }
 
     @Override
@@ -78,6 +100,7 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     @Override
     public int getItemCount() {
+        if (recipes == null) return 0;
         return recipes.size();
     }
 }

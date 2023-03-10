@@ -5,8 +5,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +39,7 @@ public class RecipesListPageFragment extends Fragment {
                 getFragmentManager().executePendingTransactions();
                 this.recipesListFragment = new RecipesListFragment();
                 FragmentTransaction tran = manager.beginTransaction();
-               // tran.add(R.id.main_fragment_container, this.recipesListFragment);
+                tran.add(R.id.fragment_recipes_list_page_container, this.recipesListFragment);
                 tran.commit();
             }
             this.recipesListFragment.setRecipes(this.recipes);
