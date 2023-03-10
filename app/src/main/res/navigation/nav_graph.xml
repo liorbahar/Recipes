@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recipesListPageFragment">
+    <fragment
+        android:id="@+id/recipesListFragment"
+        android:name="com.example.recipes.fragments.RecipesListFragment"
+        android:label="Recipes List"
+        tools:layout="@layout/recipe_list_recipe">
+    </fragment>
+    <fragment
+        android:id="@+id/recipesListPageFragment"
+        android:name="com.example.recipes.fragments.RecipesListPageFragment"
+        android:label="All Recipes List"
+        tools:layout="@layout/fragment_recipes_list_page">
+        <action
+            android:id="@+id/action_recipesListFragment_to_EditRecipesFragment"
+            app:destination="@id/editRecipesFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipesUserListPageFragment"
+        android:name="com.example.recipes.fragments.UserRecipesListPageFragment"
+        android:label="My Recipes List"
+        tools:layout="@layout/fragment_user_recipes_list_page">
+        <action
+            android:id="@+id/action_recipesListFragment_to_EditRecipesFragment"
+            app:destination="@id/editRecipesFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRecipeFragment"
+        android:name="com.example.recipes.fragments.BasePutRecipeFragment"
+        android:label="Add Recipe"
+        tools:layout="@layout/fragment_base_put_recipe" />
+    <action
+        android:id="@+id/action_global_addRecipeFragment"
+        app:destination="@id/addRecipeFragment" />
+    <fragment
+        android:id="@+id/editRecipesFragment"
+        android:name="com.example.recipes.fragments.BasePutRecipeFragment"
+        android:label="Edit Recipe"
+        tools:layout="@layout/fragment_base_put_recipe">
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+</navigation>

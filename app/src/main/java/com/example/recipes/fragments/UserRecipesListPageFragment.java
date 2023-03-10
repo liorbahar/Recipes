@@ -37,7 +37,7 @@ public class UserRecipesListPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_recipes_list_page, container, false);
 
         FragmentManager manager = getActivity().getSupportFragmentManager();
-        String userId = "b0fb79f8-30e9-4cdf-a0f2-9ecd4f690e1b";
+        String userId = "b9800fd2-1671-40f2-bb15-48f0b83ede46";
         ModelClient.instance().recipes.getUserRecipes(userId).observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
             this.recipes = recipes;
 
@@ -49,7 +49,7 @@ public class UserRecipesListPageFragment extends Fragment {
                 getFragmentManager().executePendingTransactions();
                 this.recipesOwnListFragment = new RecipesListFragment();
                 FragmentTransaction tran = manager.beginTransaction();
-                //tran.add(R.id.main_fragment_container, this.recipesOwnListFragment);
+                tran.add(R.id.fragment_recipes_list_page_container, this.recipesOwnListFragment);
                 tran.commit();
             }
             this.recipesOwnListFragment.setRecipes(this.recipes);
