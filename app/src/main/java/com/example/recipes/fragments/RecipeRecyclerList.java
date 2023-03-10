@@ -34,7 +34,8 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 int pos = getAdapterPosition();
-                listener.onItemClick(pos);
+                Recipe recipe = recipes.get(pos);
+                listener.onItemClick(recipe.id);
             }
         });
 
@@ -42,7 +43,8 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 int pos = getAdapterPosition();
-                listenerEdit.onItemClick(pos);
+                Recipe recipe = recipes.get(pos);
+                listenerEdit.onItemClick(recipe.id);
             }
         });
     }
@@ -61,11 +63,11 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     OnEditButtonClickListener listenerEdit;
 
     public static interface OnItemClickListener {
-        void onItemClick(int pos);
+        void onItemClick(String recipeId);
     }
 
     public static interface OnEditButtonClickListener {
-        void onItemClick(int pos);
+        void onItemClick(String recipeId);
     }
 
     LayoutInflater inflater;

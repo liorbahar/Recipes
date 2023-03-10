@@ -38,7 +38,6 @@ public class BasePutRecipeFragment extends Fragment {
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
-    int recipesPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,10 +71,9 @@ public class BasePutRecipeFragment extends Fragment {
         View view = binding.getRoot();
 
         try {
-            this.recipesPosition = RecipesListPageFragmentArgs.fromBundle(getArguments()).getPosition();
-            LiveData<List<Recipe>> data = ModelClient.instance().recipes.getAllRecipes();
-            Recipe getRecipe = data.getValue().get(this.recipesPosition);
-            showRecipeDeatiels(getRecipe, binding);
+            String recipeId = UserRecipesListPageFragmentArgs.fromBundle(getArguments()).getRecipeId();
+            Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
+            showRecipeDetails(data, binding);
         } catch (Exception e) {
         }
 
@@ -96,7 +94,7 @@ public class BasePutRecipeFragment extends Fragment {
         return view;
     }
 
-    private Void showRecipeDeatiels(Recipe recipe, FragmentBasePutRecipeBinding binding) {
+    private Void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
         binding.basePutRecipeBodyEt.setText(recipe.getBody());
         ;
