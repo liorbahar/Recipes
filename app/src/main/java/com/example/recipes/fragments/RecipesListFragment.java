@@ -42,11 +42,24 @@ public class RecipesListFragment extends Fragment {
         binding.recipesListFragmentLs.setLayoutManager(new LinearLayoutManager(getContext()));
         RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
         binding.recipesListFragmentLs.setAdapter(adapter);
+        adapter.setOnItemClickListener(new RecipeRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String recipeId) {
+                if (hasAccess) {
+                    UserRecipesListPageFragmentDirections.ActionUserRecipesListFragmentToViewRecipesFragment action = UserRecipesListPageFragmentDirections.actionUserRecipesListFragmentToViewRecipesFragment(recipeId);
+                    Navigation.findNavController(view).navigate(action);
+                } else {
+                    RecipesListPageFragmentDirections.ActionRecipesListPageFragmentToViewRecipesFragment action1 = RecipesListPageFragmentDirections.actionRecipesListPageFragmentToViewRecipesFragment(recipeId);
+                    Navigation.findNavController(view).navigate(action1);
+                }
+            }
+        });
 
         adapter.setOnEditButtonClickListener(new RecipeRecyclerAdapter.OnEditButtonClickListener() {
             @Override
-            public void onItemClick(int pos) {
-                RecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = RecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(pos);
+            public void onItemClick(String recipeId) {
+                //get userId from context when have login
+                UserRecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = UserRecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(recipeId);
                 Navigation.findNavController(view).navigate(action);
             }
         });

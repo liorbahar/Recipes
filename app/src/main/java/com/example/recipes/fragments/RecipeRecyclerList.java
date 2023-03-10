@@ -4,12 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipes.R;
+import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.models.Recipe;
 import java.util.List;
 
@@ -20,8 +22,9 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
     ImageButton editRecipeBtn;
     List<Recipe> recipes;
     Boolean hasAccess;
+    ImageView recipeImage;
 
-    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener,RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
+    public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener, RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
         super(itemView);
         this.recipes = recipes;
         this.hasAccess = hasAccess;
@@ -29,20 +32,19 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         recipeOwner = itemView.findViewById(R.id.recipe_list_recipe_owner);
         deleteRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_delete_btn);
         editRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_edit_btn);
+        recipeImage = itemView.findViewById(R.id.recipe_list_recipe_image);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = getAdapterPosition();
-                listener.onItemClick(pos);
+                listener.onItemClick(getRecipeByPosition());
             }
         });
 
         editRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = getAdapterPosition();
-                listenerEdit.onItemClick(pos);
+                listenerEdit.onItemClick(getRecipeByPosition());
             }
         });
     }
@@ -53,6 +55,12 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         int RecipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
         deleteRecipeBtn.setVisibility(RecipeActionsStatus);
         editRecipeBtn.setVisibility(RecipeActionsStatus);
+        ImageHelper.insertImageByUrl(recipe,recipeImage);
+    }
+
+    private String getRecipeByPosition() {
+        int pos = getAdapterPosition();
+        return recipes.get(pos).id;
     }
 }
 
@@ -61,11 +69,11 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     OnEditButtonClickListener listenerEdit;
 
     public static interface OnItemClickListener {
-        void onItemClick(int pos);
+        void onItemClick(String recipeId);
     }
 
     public static interface OnEditButtonClickListener {
-        void onItemClick(int pos);
+        void onItemClick(String recipeId);
     }
 
     LayoutInflater inflater;
@@ -81,6 +89,7 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
     void setOnEditButtonClickListener(OnEditButtonClickListener listenerEdit) {
         this.listenerEdit = listenerEdit;
     }
@@ -89,7 +98,7 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recipe_list_recipe, parent, false);
-        return new RecipeViewHolder(view, listener,listenerEdit, recipes, hasAccess);
+        return new RecipeViewHolder(view, listener, listenerEdit, recipes, hasAccess);
     }
 
     @Override

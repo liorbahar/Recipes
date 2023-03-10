@@ -2,9 +2,9 @@ package com.example.recipes.fragments;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentBasePutRecipeBinding;
+import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
-import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,18 +19,15 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
 import java.util.UUID;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 
 public class BasePutRecipeFragment extends Fragment {
@@ -38,7 +35,6 @@ public class BasePutRecipeFragment extends Fragment {
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
-    int recipesPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,10 +68,9 @@ public class BasePutRecipeFragment extends Fragment {
         View view = binding.getRoot();
 
         try {
-            this.recipesPosition = RecipesListPageFragmentArgs.fromBundle(getArguments()).getPosition();
-            LiveData<List<Recipe>> data = ModelClient.instance().recipes.getAllRecipes();
-            Recipe getRecipe = data.getValue().get(this.recipesPosition);
-            showRecipeDeatiels(getRecipe, binding);
+            String recipeId = UserRecipesListPageFragmentArgs.fromBundle(getArguments()).getRecipeId();
+            Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
+            showRecipeDetails(data, binding);
         } catch (Exception e) {
         }
 
@@ -96,17 +91,11 @@ public class BasePutRecipeFragment extends Fragment {
         return view;
     }
 
-    private Void showRecipeDeatiels(Recipe recipe, FragmentBasePutRecipeBinding binding) {
+    private Void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
         binding.basePutRecipeBodyEt.setText(recipe.getBody());
-        ;
-        ImageView avatarImage = binding.addrecipeAvatarImv;
+        ImageHelper.insertImageByUrl(recipe,binding.addrecipeAvatarImv);
 
-        if (recipe.getAvatarUrl() != "") {
-            Picasso.get().load(recipe.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(avatarImage);
-        } else {
-            avatarImage.setImageResource(R.drawable.add_image_avatar);
-        }
         return null;
     }
 
