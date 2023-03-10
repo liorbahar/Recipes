@@ -19,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
 import java.util.UUID;
 
 import android.graphics.Bitmap;
@@ -30,7 +29,6 @@ import android.widget.ImageView;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.Navigation;
 
 public class BasePutRecipeFragment extends Fragment {
@@ -97,10 +95,10 @@ public class BasePutRecipeFragment extends Fragment {
     private Void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
         binding.basePutRecipeBodyEt.setText(recipe.getBody());
-        ;
+
         ImageView avatarImage = binding.addrecipeAvatarImv;
 
-        if (recipe.getAvatarUrl() != "") {
+        if (!recipe.getAvatarUrl().equals("")) {
             Picasso.get().load(recipe.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(avatarImage);
         } else {
             avatarImage.setImageResource(R.drawable.add_image_avatar);
