@@ -1,49 +1,63 @@
 package com.example.recipes.database;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.example.recipes.database.interfaces.IUserDBHandler;
+import com.example.recipes.helper.models.ModelClient;
+import com.example.recipes.helper.models.UserModel;
 import com.example.recipes.models.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
+public class UserFirebaseHandler {
+    public static FirebaseFirestore db;
+    public FirebaseAuth firebaseAuth;
 
-public class UserFirebaseHandler implements IUserDBHandler {
-    public FirebaseFirestore db;
-    public FirebaseStorage storage;
-
-    public UserFirebaseHandler(){
+    public UserFirebaseHandler() {
         db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
         db.setFirestoreSettings(settings);
-        storage = FirebaseStorage.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    @Override
-    public void AddUser(User user) {
-        db.collection(User.COLLECTION_NAME)
-                .add(user.toJson())
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+
+    public static void getUser(String id, final ModelClient.Listener<User> listener) {
+        db.collection(User.COLLECTION_NAME).whereEqualTo("id", id)
+                .get().addOnCompleteListener(task -> {
+                    User user = null;
+                    if (task.isSuccessful()) {
+                        user = new User();
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            user = User.fromJson(doc.getData());
+                        }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Error adding document", e);
-                    }
+                    listener.onComplete(user);
                 });
+    }
+
+    public void registerUser(User user, String password, UserModel.RegisterListener listener) {
+        firebaseAuth.createUserWithEmailAndPassword(user.email, password)
+                .addOnSuccessListener(authResult -> {
+                    db.collection(User.COLLECTION_NAME).document(firebaseAuth.getCurrentUser().getUid()).set(user.toJson()).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            listener.onComplete();
+                        }
+                    });
+
+                }).addOnFailureListener(e -> {
+                    listener.onFailed(e.getMessage());
+                });
+    }
+
+    public void loginUser(String email, String password, UserModel.LoginListener listener) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                listener.onComplete();
+            }
+
+        }).addOnFailureListener(e -> {
+            listener.onFailed(e.getMessage());
+        });
     }
 }

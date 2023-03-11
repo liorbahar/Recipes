@@ -3,7 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/recipesListPageFragment">
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.recipes.fragments.authentication.LogInFragment"
+        android:label="login page"
+        tools:layout="@layout/fragment_log_in">
+        <action
+            android:id="@+id/action_loginFragment_to_recipesListPageFragment"
+            app:destination="@id/recipesListPageFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.recipes.fragments.authentication.RegisterFragment"
+        android:label="register page"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_recipesListPageFragment"
+            app:destination="@id/recipesListPageFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recipesListPageFragment"
         android:name="com.example.recipes.fragments.RecipesListPageFragment"
@@ -12,9 +36,6 @@
         <action
             android:id="@+id/action_recipesListPageFragment_to_ViewRecipesFragment"
             app:destination="@id/viewRecipesFragment" />
-        <argument
-            android:name="recipeId"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/recipesUserListPageFragment"
@@ -27,9 +48,6 @@
         <action
             android:id="@+id/action_userRecipesListFragment_to_ViewRecipesFragment"
             app:destination="@id/viewRecipesFragment" />
-        <argument
-            android:name="recipeId"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/addRecipeFragment"

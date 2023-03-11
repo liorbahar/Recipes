@@ -12,8 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+
+import com.example.recipes.MainActivity;
+import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
 import com.example.recipes.models.Recipe;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +42,13 @@ public class RecipesListFragment extends Fragment {
         binding = FragmentRecipesListBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        ((MainActivity) getActivity()).setBottomNavigationVisibility(view.VISIBLE);
+
         binding.recipesListFragmentLs.setHasFixedSize(true);
         binding.recipesListFragmentLs.setLayoutManager(new LinearLayoutManager(getContext()));
         RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
         binding.recipesListFragmentLs.setAdapter(adapter);
+
         adapter.setOnItemClickListener(new RecipeRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String recipeId) {

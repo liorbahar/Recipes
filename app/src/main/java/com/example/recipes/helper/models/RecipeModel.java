@@ -16,15 +16,13 @@ import java.util.List;
 
 public class RecipeModel implements IRecipeModel {
     private final Executor executor;
-    private final Handler mainHandler;
     private final AppLocalDbRepository localDb;
     private RecipesFirebaseHandler recipesFirebaseHandler = new RecipesFirebaseHandler();
     private LiveData<List<Recipe>> recipesList;
     private LiveData<List<Recipe>> userRecipesList;
 
 
-    public RecipeModel(Handler mainHandler, Executor executor, AppLocalDbRepository localDb) {
-        this.mainHandler = mainHandler;
+    public RecipeModel(Executor executor, AppLocalDbRepository localDb) {
         this.executor = executor;
         this.localDb = localDb;
     }
