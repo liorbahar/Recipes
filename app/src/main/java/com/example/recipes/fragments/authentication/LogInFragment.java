@@ -9,6 +9,7 @@ import com.example.recipes.helper.models.UserModel;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -18,9 +19,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class LogInFragment extends Fragment {
     private FragmentLogInBinding binding;
+    ProgressDialog pd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class LogInFragment extends Fragment {
         binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        pd = new ProgressDialog(getActivity());
         ((MainActivity) getActivity()).setBottomNavigationVisibility(view.GONE);
 
         binding.registerUser.setOnClickListener(view1 -> {
@@ -44,7 +48,7 @@ public class LogInFragment extends Fragment {
             String txt_password = binding.password.getText().toString();
 
             if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
-                //add toast
+                Toast.makeText(getContext(),"Empty Credentials!",Toast.LENGTH_LONG).show();
             } else {
                 loginUser(txt_email, txt_password, view);
             }
@@ -54,20 +58,21 @@ public class LogInFragment extends Fragment {
     }
 
     private void loginUser(String email, String password, View view) {
+        pd.setMessage("Please wait...");
+        pd.show();
 
         ModelClient.instance().users.loginUser(email, password, new UserModel.LoginListener() {
             @Override
             public void onComplete() {
-                //add toast
+                pd.dismiss();
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_recipesListPageFragment);
             }
 
             @Override
             public void onFailed(String err) {
-                //add toast
+                pd.dismiss();
+                Toast.makeText(getContext(),err,Toast.LENGTH_LONG).show();
             }
         });
     }
-
-
 }

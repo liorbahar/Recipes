@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
@@ -51,9 +52,9 @@ public class RegisterFragment extends Fragment {
 
             if (TextUtils.isEmpty(txtName)
                     || TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)) {
-                //add toast
+                Toast.makeText(getContext(),"Empty credentials!",Toast.LENGTH_LONG).show();
             } else if (txtPassword.length() < 6) {
-                //add toast
+                Toast.makeText(getContext(),"Password too short!",Toast.LENGTH_LONG).show();
             } else {
                 registerUser(txtName, txtEmail, txtPassword, view);
             }
@@ -71,7 +72,6 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onComplete() {
                 pd.dismiss();
-                //add toast
                 Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_recipesListPageFragment);
 
             }
@@ -80,7 +80,7 @@ public class RegisterFragment extends Fragment {
             public void onFailed(String err) {
                 Log.e("E", err);
                 pd.dismiss();
-                //add toast
+                Toast.makeText(getContext(),err,Toast.LENGTH_LONG).show();
             }
         });
     }
