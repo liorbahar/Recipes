@@ -68,7 +68,7 @@ public class BasePutRecipeFragment extends Fragment {
         View view = binding.getRoot();
 
         try {
-            String recipeId = UserRecipesListPageFragmentArgs.fromBundle(getArguments()).getRecipeId();
+            String recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
             Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
             showRecipeDetails(data, binding);
         } catch (Exception e) {
