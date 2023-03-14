@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.recipes.helper.models.ModelClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
+
+        if (!ModelClient.instance().users.isUserLogIn()) {
+            navController.navigate(R.id.action_recipesListPageFragment_to_loginFragment);
+        }
     }
 
     int fragmentMenuId = 0;
