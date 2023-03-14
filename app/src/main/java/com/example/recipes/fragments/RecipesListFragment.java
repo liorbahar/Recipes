@@ -43,6 +43,7 @@ public class RecipesListFragment extends Fragment {
         View view = binding.getRoot();
 
         ((MainActivity) getActivity()).setBottomNavigationVisibility(view.VISIBLE);
+        ((MainActivity) getActivity()).showSupportActionBar();
 
         binding.recipesListFragmentLs.setHasFixedSize(true);
         binding.recipesListFragmentLs.setLayoutManager(new LinearLayoutManager(getContext()));

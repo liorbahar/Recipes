@@ -40,6 +40,7 @@ public class RegisterFragment extends Fragment {
 
         pd = new ProgressDialog(getActivity());
         ((MainActivity) getActivity()).setBottomNavigationVisibility(view.GONE);
+        ((MainActivity) getActivity()).hideSupportActionBar();
 
         binding.loginUser.setOnClickListener(view1 -> {
             Navigation.findNavController(view1).navigate(R.id.action_registerFragment_to_loginFragment);

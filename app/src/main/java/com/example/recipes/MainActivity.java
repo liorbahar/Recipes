@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
-        getSupportActionBar().hide();
     }
 
     int fragmentMenuId = 0;
@@ -55,5 +54,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void setBottomNavigationVisibility(int visibilityNum) {
         this.findViewById(R.id.main_bottomNavigationView).setVisibility(visibilityNum);
+    }
+
+    public void hideSupportActionBar() {
+        getSupportActionBar().hide();
+    }
+
+    public void showSupportActionBar() {
+        getSupportActionBar().show();
     }
 }
