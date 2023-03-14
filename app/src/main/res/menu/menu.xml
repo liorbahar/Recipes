@@ -2,8 +2,8 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/addRecipeFragment"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Add"
+        android:id="@+id/viewUserProfileFragment"
+        android:icon="@drawable/user_profile_avatar"
+        android:title="ViewProfile"
         app:showAsAction="always" />
 </menu>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#68868E"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context=".fragments.authentication.LogInFragment">
+
+    <TextView
+        android:id="@+id/loginTitleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:shadowColor="#00bcd3"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:textColorHighlight="#00bcd3"
+        android:textColorHint="#00bcd3"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="Email"
+        android:padding="10dp"
+        android:textColor="#eeeeee"
+        android:textColorHighlight="#eeeeee"
+        android:textColorHint="#eeeeee"
+        android:textColorLink="#eeeeee" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColor="#eeeeee"
+        android:textColorHighlight="#eeeeee"
+        android:textColorHint="#eeeeee" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:backgroundTint="#272E34"
+        android:padding="10dp"
+        android:text="LOGIN" />
+
+    <TextView
+        android:id="@+id/register_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="New to Matconet? Register"
+        android:textColor="#eeeeee"
+        android:textColorHighlight="#eeeeee"
+        android:textColorHint="#eeeeee" />
+
+</LinearLayout>

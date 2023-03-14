@@ -5,32 +5,40 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.recipes.helper.models.ModelClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NavHostFragment navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.main_navhost);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
-        NavigationUI.setupActionBarWithNavController(this,navController);
+        NavigationUI.setupActionBarWithNavController(this, navController);
 
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
-        NavigationUI.setupWithNavController(navView,navController);
+        NavigationUI.setupWithNavController(navView, navController);
 
+        if (!ModelClient.instance().users.isUserLogIn()) {
+            navController.navigate(R.id.action_recipesListPageFragment_to_loginFragment);
+        }
     }
 
     int fragmentMenuId = 0;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
-        if (fragmentMenuId != 0){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        if (fragmentMenuId != 0) {
             menu.removeItem(fragmentMenuId);
         }
         fragmentMenuId = 0;
@@ -40,12 +48,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
-        }else{
+        } else {
             fragmentMenuId = item.getItemId();
-            return NavigationUI.onNavDestinationSelected(item,navController);
+            return NavigationUI.onNavDestinationSelected(item, navController);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setBottomNavigationVisibility(int visibilityNum) {
+        this.findViewById(R.id.main_bottomNavigationView).setVisibility(visibilityNum);
+    }
+
+    public void hideSupportActionBar() {
+        getSupportActionBar().hide();
+    }
+
+    public void showSupportActionBar() {
+        getSupportActionBar().show();
     }
 }
