@@ -1,7 +1,6 @@
 package com.example.recipes.fragments;
 
 import com.example.recipes.databinding.FragmentViewRecipeBinding;
-import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
 
@@ -41,7 +40,9 @@ public class ViewRecipeFragment extends Fragment {
         binding.recipeNameTv.setText(recipe.getName());
         //binding.recipeCreatorNameTv.setText(recipe.getUserId()); //get userId name from user collection
         binding.recipeBodyTv.setText(recipe.getBody());
-        ImageHelper.insertImageByUrl(recipe,binding.recipeImage);
+
+        binding.recipeNameTv.setEnabled(false);
+        binding.recipeBodyTv.setEnabled(false);
 
         return null;
     }

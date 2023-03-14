@@ -8,10 +8,12 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import com.example.recipes.models.User;
 
+import java.util.List;
+
 @Dao
 public interface UserDao {
     @Query("select * from User")
-    LiveData<User> getAll();
+    LiveData<List<User>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(User... users);
