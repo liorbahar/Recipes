@@ -25,8 +25,8 @@ public class UserModel {
 
     public LiveData<List<User>> getCurrentUser() {
         if (this.userData == null) {
-        this.refreshCurrentUser();
         this.userData = this.localDb.UserDao().getAll();
+        this.refreshCurrentUser();
         }
         return this.userData;
 

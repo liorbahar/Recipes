@@ -33,9 +33,10 @@ public class ViewUserProfileFragment extends Fragment {
         binding = FragmentViewUserProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        ModelClient.instance().users.getCurrentUser();
         ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (List<User> users) -> {
-            ShowDetails(view, users.get(0));
+            if(!users.isEmpty()){
+                ShowDetails(view, users.get(0));
+            }
         });
 
         binding.viewUserProfileSignoutBtn.setOnClickListener(view1 -> {
