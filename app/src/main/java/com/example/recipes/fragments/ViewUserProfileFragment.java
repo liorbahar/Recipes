@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentViewUserProfileBinding;
+import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.User;
 
@@ -34,13 +35,14 @@ public class ViewUserProfileFragment extends Fragment {
         View view = binding.getRoot();
 
         ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (List<User> users) -> {
-            if(!users.isEmpty()){
+            if (!users.isEmpty()) {
                 ShowDetails(view, users.get(0));
             }
         });
 
         binding.viewUserProfileSignoutBtn.setOnClickListener(view1 -> {
             ModelClient.instance().users.signOutUser();
+            //fix bug after login
             Navigation.findNavController(view).navigate(R.id.action_viewUserProfileFragment_to_loginFragment);
         });
 
@@ -63,6 +65,7 @@ public class ViewUserProfileFragment extends Fragment {
         name.setText(user.getName());
         id.setText(user.getId());
         email.setText(user.getEmail());
+       ImageHelper.insertImageByUrl(user, binding.userProfileAvatarImg);
     }
 
 }

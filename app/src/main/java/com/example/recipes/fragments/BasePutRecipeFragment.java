@@ -110,7 +110,7 @@ public class BasePutRecipeFragment extends Fragment {
             binding.addrecipeAvatarImv.setDrawingCacheEnabled(true);
             binding.addrecipeAvatarImv.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) binding.addrecipeAvatarImv.getDrawable()).getBitmap();
-            ModelClient.instance().recipes.uploadImage(uniqueID, bitmap, url -> {
+            ModelClient.instance().uploadImage(uniqueID, bitmap, url -> {
                 if (url != null) {
                     recipe.setAvatarUrl(url);
                 }

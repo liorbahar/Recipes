@@ -68,7 +68,7 @@ public class RegisterFragment extends Fragment {
         pd.setMessage("Please wait...");
         pd.show();
 
-        User user = new User("", name, email);
+        User user = new User("", name, email, "");
         ModelClient.instance().users.registerUser(user, password, new UserModel.RegisterListener() {
             @Override
             public void onComplete() {
