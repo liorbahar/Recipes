@@ -53,10 +53,6 @@ public class RecipeModel implements IRecipeModel {
         this.refreshUserRecipes(recipe.userId);
     }
 
-    public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {
-        recipesFirebaseHandler.uploadImage(name, bitmap, listener);
-    }
-
     public void refreshUserRecipes(String userId) {
         EventUserRecipesListLoadingState.setValue(LoadingState.LOADING);
         this.recipesFirebaseHandler.getRecipesOfUser(userId, (List<Recipe> recipes) -> {

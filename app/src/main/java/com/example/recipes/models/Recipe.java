@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.recipes.models.interfaces.IImageModel;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-public class Recipe {
+public class Recipe implements IImageModel {
     @PrimaryKey
     @NonNull
     public String id = "";
