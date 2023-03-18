@@ -35,6 +35,7 @@ public class BasePutRecipeFragment extends Fragment {
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
+    String recipeId = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class BasePutRecipeFragment extends Fragment {
         View view = binding.getRoot();
 
         try {
-            String recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
+            recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
             Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
             showRecipeDetails(data, binding);
         } catch (Exception e) {
@@ -102,13 +103,13 @@ public class BasePutRecipeFragment extends Fragment {
     private void onSaveStudentClick(FragmentBasePutRecipeBinding binding, View view) {
         String name = binding.basePutRecipeNameEt.getText().toString();
         String body = binding.basePutRecipeBodyEt.getText().toString();
-        String uniqueID = UUID.randomUUID().toString();
+        String id = recipeId != null ? recipeId : UUID.randomUUID().toString();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Recipe recipe = new Recipe(uniqueID, name, body, userId, "");
+        Recipe recipe = new Recipe(id, name, body, userId, "");
 
         if (isAvatarSelected) {
             Bitmap bitmap = ImageHelper.getImageViewBitmap(binding.addrecipeAvatarImv);
-            ModelClient.instance().uploadImage(uniqueID, bitmap, url -> {
+            ModelClient.instance().uploadImage(id, bitmap, url -> {
                 if (url != null) {
                     recipe.setAvatarUrl(url);
                 }
