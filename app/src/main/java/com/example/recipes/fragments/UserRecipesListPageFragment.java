@@ -21,6 +21,7 @@ import com.example.recipes.fragments.views.UserRecipesListPageFragmentViewModel;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.RecipeModel;
 import com.example.recipes.models.Recipe;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class UserRecipesListPageFragment extends Fragment {
     private FragmentTransaction tran;
     private UserRecipesListPageFragmentViewModel viewModel;
     private FragmentUserRecipesListPageBinding binding;
+    private String userUuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,11 +39,10 @@ public class UserRecipesListPageFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentUserRecipesListPageBinding.inflate(inflater,container, false);
         View view = binding.getRoot();
-        String userId = "0lPwehYTFIXzWA06sqWpdREY8yN2";
         this.showRecipesList();
 
         binding.swipeUserRecipesRefresh.setOnRefreshListener(()->{
-            ModelClient.instance().recipes.refreshUserRecipes(userId);
+            ModelClient.instance().recipes.refreshUserRecipes(this.userUuid);
         });
 
         ModelClient.instance().recipes.EventUserRecipesListLoadingState.observe(getViewLifecycleOwner(),status->{

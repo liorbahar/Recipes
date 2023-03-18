@@ -56,11 +56,11 @@ public class RecipesListFragment extends Fragment {
             @Override
             public void onItemClick(String recipeId) {
                 if (hasAccess) {
-                    //UserRecipesListPageFragmentDirections.ActionUserRecipesListFragmentToViewRecipesFragment action = UserRecipesListPageFragmentDirections.actionUserRecipesListFragmentToViewRecipesFragment(recipeId);
-                    //Navigation.findNavController(view).navigate(action);
+                    UserRecipesListPageFragmentDirections.ActionUserRecipesListFragmentToViewRecipesFragment action = UserRecipesListPageFragmentDirections.actionUserRecipesListFragmentToViewRecipesFragment(recipeId);
+                    Navigation.findNavController(view).navigate(action);
                 } else {
-                    //RecipesListPageFragmentDirections.ActionRecipesListPageFragmentToViewRecipesFragment action1 = RecipesListPageFragmentDirections.actionRecipesListPageFragmentToViewRecipesFragment(recipeId);
-                    //Navigation.findNavController(view).navigate(action1);
+                    RecipesListPageFragmentDirections.ActionRecipesListPageFragmentToViewRecipesFragment action1 = RecipesListPageFragmentDirections.actionRecipesListPageFragmentToViewRecipesFragment(recipeId);
+                    Navigation.findNavController(view).navigate(action1);
                 }
             }
         });
@@ -69,8 +69,8 @@ public class RecipesListFragment extends Fragment {
             @Override
             public void onItemClick(String recipeId) {
                 //get userId from context when have login
-                //UserRecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = UserRecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(recipeId);
-                //Navigation.findNavController(view).navigate(action);
+                UserRecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = UserRecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(recipeId);
+                Navigation.findNavController(view).navigate(action);
             }
         });
 

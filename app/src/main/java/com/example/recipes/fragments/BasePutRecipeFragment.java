@@ -103,7 +103,7 @@ public class BasePutRecipeFragment extends Fragment {
     private void onSaveStudentClick(FragmentBasePutRecipeBinding binding, View view) {
         String name = binding.basePutRecipeNameEt.getText().toString();
         String body = binding.basePutRecipeBodyEt.getText().toString();
-        String id = recipeId != null ? recipeId : UUID.randomUUID().toString();
+        String id = !recipeId.isEmpty() ? recipeId : UUID.randomUUID().toString();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Recipe recipe = new Recipe(id, name, body, userId, "");
 

@@ -17,7 +17,6 @@ import java.util.List;
 
 class RecipeViewHolder extends RecyclerView.ViewHolder {
     TextView recipeName;
-    TextView recipeOwner;
     ImageButton deleteRecipeBtn;
     ImageButton editRecipeBtn;
     List<Recipe> recipes;

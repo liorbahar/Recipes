@@ -75,7 +75,7 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler{
                 });
     }
     public void addRecipe(Recipe recipe, ModelClient.Listener<Void> listener) {
-        db.collection(recipe.COLLECTION).document(recipe.getId()).set(recipe.toJson())
+        db.collection(Recipe.COLLECTION).document(recipe.getId()).set(recipe.toJson())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
