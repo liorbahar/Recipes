@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.recipes.helper.interfaces.IImageModel;
+//import com.example.recipes.helper.models.interfaces.IImageModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,9 @@ import java.util.Map;
 
 
 @Entity
-public class User implements IImageModel {
+//public class User implements IImageModel {
+public class User{
+
     @PrimaryKey
     @NonNull
     public String id;

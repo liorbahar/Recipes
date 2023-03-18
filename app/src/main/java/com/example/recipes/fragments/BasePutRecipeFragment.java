@@ -103,7 +103,8 @@ public class BasePutRecipeFragment extends Fragment {
         String name = binding.basePutRecipeNameEt.getText().toString();
         String body = binding.basePutRecipeBodyEt.getText().toString();
         String uniqueID = UUID.randomUUID().toString();
-        String userId = UUID.randomUUID().toString(); //change when have login user
+        //String userId = UUID.randomUUID().toString(); //change when have login user
+        String userId = "0lPwehYTFIXzWA06sqWpdREY8yN2";
         Recipe recipe = new Recipe(uniqueID, name, body, userId, "");
 
         if (isAvatarSelected) {

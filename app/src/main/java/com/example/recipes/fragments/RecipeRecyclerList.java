@@ -86,6 +86,11 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         this.hasAccess = hasAccess;
     }
 
+    public void setRecipes(List<Recipe> recipes){
+        this.recipes = recipes;
+        notifyDataSetChanged();
+    }
+
     void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

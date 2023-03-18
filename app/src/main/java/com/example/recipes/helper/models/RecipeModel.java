@@ -41,6 +41,7 @@ public class RecipeModel implements IRecipeModel {
 
     public void addRecipe(Recipe recipe, ModelClient.Listener listener) {
         recipesFirebaseHandler.addRecipe(recipe, listener);
+        this.refreshUserRecipes(recipe.userId);
     }
 
     public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {

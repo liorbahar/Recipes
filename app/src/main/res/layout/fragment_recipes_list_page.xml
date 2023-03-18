@@ -8,13 +8,14 @@
 
     <FrameLayout
         android:id="@+id/fragment_recipes_list_page_container"
-        android:layout_width="405dp"
-        android:layout_height="587dp"
+        android:layout_width="397dp"
+        android:layout_height="545dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.979">
+        app:layout_constraintVertical_bias="1.0">
 
     </FrameLayout>
 
