@@ -64,14 +64,12 @@ public class EditUserProfileFragment extends Fragment {
         binding = FragmentEditUserProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (List<User> users) -> {
-            if (!users.isEmpty()) {
-                User user = users.get(0);
+        ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (User user) -> {
+            if(user != null) {
                 ShowDetails(view, user);
                 avatarUrl = user.getAvatarUrl();
             }
         });
-
 
         binding.editUserProfileSaveBtn.setOnClickListener(view1 -> {
             this.onEditClick(binding, view, avatarUrl);

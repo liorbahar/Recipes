@@ -13,11 +13,11 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Query("select * from User")
-    LiveData<List<User>> getAll();
+    LiveData<User> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(User... users);
 
-    @Delete
-    void delete(User user);
+    @Query("DELETE FROM User")
+    void delete();
 }

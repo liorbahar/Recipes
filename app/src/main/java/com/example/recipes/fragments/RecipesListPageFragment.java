@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +29,14 @@ public class RecipesListPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipes_list_page, container, false);
         FragmentManager manager = getActivity().getSupportFragmentManager();
 
-        ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
+        ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
             this.recipes = recipes;
 
-            if (this.recipesListFragment == null){
+            if (this.recipesListFragment == null) {
                 this.recipesListFragment = new RecipesListFragment();
             }
 
             if (!this.recipesListFragment.isAdded()) {
-                getFragmentManager().executePendingTransactions();
                 this.recipesListFragment = new RecipesListFragment();
                 FragmentTransaction tran = manager.beginTransaction();
                 tran.add(R.id.fragment_recipes_list_page_container, this.recipesListFragment);

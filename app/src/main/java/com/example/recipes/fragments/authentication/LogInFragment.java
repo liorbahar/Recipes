@@ -66,6 +66,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onComplete() {
                 pd.dismiss();
+                ModelClient.instance().users.refreshCurrentUser();
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_recipesListPageFragment);
             }
 

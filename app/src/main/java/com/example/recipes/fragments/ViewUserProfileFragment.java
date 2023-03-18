@@ -18,8 +18,6 @@ import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.User;
 
-import java.util.List;
-
 public class ViewUserProfileFragment extends Fragment {
     FragmentViewUserProfileBinding binding;
 
@@ -33,16 +31,15 @@ public class ViewUserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentViewUserProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
-        ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (List<User> users) -> {
-            if (!users.isEmpty()) {
-                ShowDetails(view, users.get(0));
+        ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (User user) -> {
+            if(user != null){
+                ShowDetails(view, user);
             }
         });
 
         binding.viewUserProfileSignoutBtn.setOnClickListener(view1 -> {
+            ModelClient.instance().users.clearUser();
             ModelClient.instance().users.signOutUser();
-            //fix bug after login
             Navigation.findNavController(view).navigate(R.id.action_viewUserProfileFragment_to_loginFragment);
         });
 
@@ -65,7 +62,7 @@ public class ViewUserProfileFragment extends Fragment {
         name.setText(user.getName());
         id.setText(user.getId());
         email.setText(user.getEmail());
-       ImageHelper.insertImageByUrl(user, binding.userProfileAvatarImg);
+        ImageHelper.insertImageByUrl(user, binding.userProfileAvatarImg);
     }
 
 }
