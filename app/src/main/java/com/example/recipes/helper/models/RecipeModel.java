@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.recipes.database.RecipesFirebaseHandler;
 import com.example.recipes.helper.models.interfaces.IRecipeModel;
@@ -31,6 +32,14 @@ public class RecipeModel implements IRecipeModel {
         void onComplete(List<Recipe> data);
     }
 
+    public enum LoadingState{
+        LOADING,
+        NOT_LOADING
+    }
+    final public MutableLiveData<LoadingState> EventRecipesListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+    final public MutableLiveData<LoadingState> EventUserRecipesListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+
+
     public LiveData<List<Recipe>> getUserRecipes(String userId) {
         if (this.userRecipesList == null) {
             this.userRecipesList = this.localDb.recipesDao().getRecipesByUserId(userId);
@@ -49,11 +58,13 @@ public class RecipeModel implements IRecipeModel {
     }
 
     public void refreshUserRecipes(String userId) {
+        EventUserRecipesListLoadingState.setValue(LoadingState.LOADING);
         this.recipesFirebaseHandler.getRecipesOfUser(userId, (List<Recipe> recipes) -> {
             executor.execute(() -> {
                 for (Recipe recipe : recipes) {
                     localDb.recipesDao().insertAll(recipe);
                 }
+                EventUserRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }
@@ -82,11 +93,13 @@ public class RecipeModel implements IRecipeModel {
 
 
     public void refreshAllRecipes() {
+        EventRecipesListLoadingState.setValue(LoadingState.LOADING);
         this.recipesFirebaseHandler.getAllRecipes((List<Recipe> recipes) -> {
             executor.execute(() -> {
                 for (Recipe recipe : recipes) {
                     localDb.recipesDao().insertAll(recipe);
                 }
+                EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }

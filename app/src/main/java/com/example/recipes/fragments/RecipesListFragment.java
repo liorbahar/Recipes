@@ -79,16 +79,14 @@ public class RecipesListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String recipeNameSearch) {
                 List<Recipe> matchRecipes = searchRecipesByName(recipeNameSearch);
-                RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), matchRecipes, hasAccess);
-                binding.recipesListFragmentLs.setAdapter(adapter);
+                adapter.setRecipes(matchRecipes);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String recipeNameSearch) {
                 List<Recipe> matchRecipes = searchRecipesByName(recipeNameSearch);
-                RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), matchRecipes, hasAccess);
-                binding.recipesListFragmentLs.setAdapter(adapter);
+                adapter.setRecipes(matchRecipes);
                 return true;
             }
         });
@@ -105,14 +103,12 @@ public class RecipesListFragment extends Fragment {
         }
         return matchRecipes;
     }
+
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
         if (this.adapter != null) {
             this.adapter.setRecipes(recipes);
         }
-        //this.adapter.setRecipes(recipes);
-        //this.adapter = new RecipeRecyclerAdapter(getLayoutInflater(), recipes, this.hasAccess);
-        //binding.recipesListFragmentLs.set
     }
 
 }

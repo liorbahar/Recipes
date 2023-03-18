@@ -6,17 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RecipesListPageFragment">
 
-    <FrameLayout
-        android:id="@+id/fragment_recipes_list_page_container"
-        android:layout_width="397dp"
-        android:layout_height="545dp"
-        android:layout_marginTop="20dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="376dp"
+        android:layout_height="566dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.432">
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fragment_recipes_list_page_container"
+            android:layout_width="395dp"
+            android:layout_height="594dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

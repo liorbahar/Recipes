@@ -14,31 +14,43 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipes.R;
+import com.example.recipes.databinding.FragmentRecipesListPageBinding;
+import com.example.recipes.databinding.FragmentUserRecipesListPageBinding;
 import com.example.recipes.fragments.views.RecipesListPageFragmentViewModel;
 import com.example.recipes.fragments.views.UserRecipesListPageFragmentViewModel;
 import com.example.recipes.helper.models.ModelClient;
+import com.example.recipes.helper.models.RecipeModel;
 import com.example.recipes.models.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRecipesListPageFragment extends Fragment {
-    private List<Recipe> recipes = new ArrayList<>();
     private RecipesListFragment recipesListFragment;
     private FragmentTransaction tran;
     private UserRecipesListPageFragmentViewModel viewModel;
+    private FragmentUserRecipesListPageBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_recipes_list_page, container, false);
+        binding = FragmentUserRecipesListPageBinding.inflate(inflater,container, false);
+        View view = binding.getRoot();
         String userId = "0lPwehYTFIXzWA06sqWpdREY8yN2";
         this.showRecipesList();
 
-        this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
-            if (recipes != null) {
-                this.recipesListFragment.setRecipes(recipes);
+        binding.swipeUserRecipesRefresh.setOnRefreshListener(()->{
+            ModelClient.instance().recipes.refreshUserRecipes(userId);
+        });
+
+        ModelClient.instance().recipes.EventUserRecipesListLoadingState.observe(getViewLifecycleOwner(),status->{
+            binding.swipeUserRecipesRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+
+            if (status == RecipeModel.LoadingState.NOT_LOADING){
+                this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
+                    this.recipesListFragment.setRecipes(recipes);
+                });
             }
         });
 
@@ -52,7 +64,8 @@ public class UserRecipesListPageFragment extends Fragment {
     }
 
     private void showRecipesList() {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentManager manager = getFragmentManager();
+
         if (this.recipesListFragment != null && this.recipesListFragment.isAdded()) {
             this.tran.remove(this.recipesListFragment);
         }
