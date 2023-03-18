@@ -5,6 +5,7 @@ import com.example.recipes.databinding.FragmentBasePutRecipeBinding;
 import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,6 @@ import android.view.ViewGroup;
 import java.util.UUID;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -94,7 +94,7 @@ public class BasePutRecipeFragment extends Fragment {
     private Void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
         binding.basePutRecipeBodyEt.setText(recipe.getBody());
-        ImageHelper.insertImageByUrl(recipe,binding.addrecipeAvatarImv);
+        ImageHelper.insertImageByUrl(recipe, binding.addrecipeAvatarImv);
 
         return null;
     }
@@ -103,26 +103,26 @@ public class BasePutRecipeFragment extends Fragment {
         String name = binding.basePutRecipeNameEt.getText().toString();
         String body = binding.basePutRecipeBodyEt.getText().toString();
         String uniqueID = UUID.randomUUID().toString();
-        String userId = UUID.randomUUID().toString(); //change when have login user
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Recipe recipe = new Recipe(uniqueID, name, body, userId, "");
 
         if (isAvatarSelected) {
-            binding.addrecipeAvatarImv.setDrawingCacheEnabled(true);
-            binding.addrecipeAvatarImv.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) binding.addrecipeAvatarImv.getDrawable()).getBitmap();
+            Bitmap bitmap = ImageHelper.getImageViewBitmap(binding.addrecipeAvatarImv);
             ModelClient.instance().uploadImage(uniqueID, bitmap, url -> {
                 if (url != null) {
                     recipe.setAvatarUrl(url);
                 }
-                ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
-                    Navigation.findNavController(view).popBackStack();
-                });
+                this.addRecipeAndNavigate(recipe, view);
             });
         } else {
-            ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
-                Navigation.findNavController(view).popBackStack();
-            });
+            this.addRecipeAndNavigate(recipe, view);
         }
+    }
+
+    private void addRecipeAndNavigate(Recipe recipe, View view) {
+        ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
+            Navigation.findNavController(view).popBackStack();
+        });
     }
 
     @Override

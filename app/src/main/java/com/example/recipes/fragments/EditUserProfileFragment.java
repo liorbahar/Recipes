@@ -21,10 +21,9 @@ import android.widget.EditText;
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentEditUserProfileBinding;
 import com.example.recipes.helper.ImageHelper;
+import com.example.recipes.helper.UserProfileHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.User;
-
-import java.util.List;
 
 public class EditUserProfileFragment extends Fragment {
     FragmentEditUserProfileBinding binding;
@@ -65,8 +64,8 @@ public class EditUserProfileFragment extends Fragment {
         View view = binding.getRoot();
 
         ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (User user) -> {
-            if(user != null) {
-                ShowDetails(view, user);
+            if (user != null) {
+                UserProfileHelper.ShowDetails(view, user, binding.userProfileAvatarImv, true);
                 avatarUrl = user.getAvatarUrl();
             }
         });
@@ -86,44 +85,29 @@ public class EditUserProfileFragment extends Fragment {
         return view;
     }
 
-    public void ShowDetails(View view, User user) {
-        EditText name = view.findViewById(R.id.user_profile_name_et);
-        EditText id = view.findViewById(R.id.user_profile_id_et);
-        EditText email = view.findViewById(R.id.user_profile_email_et);
-        id.setEnabled(false);
-        email.setEnabled(false);
-
-        name.setText(user.getName());
-        id.setText(user.getId());
-        email.setText(user.getEmail());
-        ImageHelper.insertImageByUrl(user, binding.userProfileAvatarImv);
-    }
-
     private void onEditClick(FragmentEditUserProfileBinding binding, View view, String avatarUrl) {
         EditText name = view.findViewById(R.id.user_profile_name_et);
         EditText id = view.findViewById(R.id.user_profile_id_et);
         EditText email = view.findViewById(R.id.user_profile_email_et);
         User user = new User(id.getText().toString(), name.getText().toString(), email.getText().toString(), avatarUrl);
 
-
         if (isAvatarSelected) {
-            binding.userProfileAvatarImv.setDrawingCacheEnabled(true);
-            binding.userProfileAvatarImv.buildDrawingCache();
-            Bitmap bitmap = ((BitmapDrawable) binding.userProfileAvatarImv.getDrawable()).getBitmap();
+            Bitmap bitmap = ImageHelper.getImageViewBitmap(binding.userProfileAvatarImv);
             ModelClient.instance().uploadImage(user.id, bitmap, url -> {
                 if (url != null) {
                     user.setAvatarUrl(url);
                 }
-                ModelClient.instance().users.editUser(user, (unused) -> {
-                    ModelClient.instance().users.refreshCurrentUser();
-                    Navigation.findNavController(view).popBackStack();
-                });
+                this.editUserAndNavigate(user, view);
             });
         } else {
-            ModelClient.instance().users.editUser(user, (unused) -> {
-                ModelClient.instance().users.refreshCurrentUser();
-                Navigation.findNavController(view).popBackStack();
-            });
+            this.editUserAndNavigate(user, view);
         }
+    }
+
+    private void editUserAndNavigate(User user, View view) {
+        ModelClient.instance().users.editUser(user, (unused) -> {
+            ModelClient.instance().users.refreshCurrentUser();
+            Navigation.findNavController(view).popBackStack();
+        });
     }
 }
