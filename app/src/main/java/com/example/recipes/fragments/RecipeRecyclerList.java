@@ -45,13 +45,14 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
                 listenerEdit.onItemClick(getRecipeByPosition());
             }
         });
+
     }
 
     public void bind(Recipe recipe, int pos) {
         recipeName.setText(recipe.name);
-        int RecipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
-        deleteRecipeBtn.setVisibility(RecipeActionsStatus);
-        editRecipeBtn.setVisibility(RecipeActionsStatus);
+        int recipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
+        deleteRecipeBtn.setVisibility(recipeActionsStatus);
+        editRecipeBtn.setVisibility(recipeActionsStatus);
         ImageHelper.insertImageByUrl(recipe,recipeImage);
     }
 
