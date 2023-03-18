@@ -27,7 +27,6 @@ import java.util.List;
 
 public class RecipesFirebaseHandler implements IRecipesDBHandler{
     public FirebaseFirestore db;
-    public FirebaseStorage storage;
 
     public RecipesFirebaseHandler(){
         db = FirebaseFirestore.getInstance();
@@ -35,7 +34,6 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler{
                 .setPersistenceEnabled(false)
                 .build();
         db.setFirestoreSettings(settings);
-        storage = FirebaseStorage.getInstance();
     }
 
     public void getAllRecipes(RecipeModel.GetAllRecipesListener callback) {
@@ -86,29 +84,4 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler{
                 });
     }
 
-    public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {
-        StorageReference storageRef = storage.getReference();
-        StorageReference imagesRef = storageRef.child("images/" + name + ".jpg");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                listener.onComplete(null);
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        listener.onComplete(uri.toString());
-                    }
-                });
-            }
-        });
-    }
 }
