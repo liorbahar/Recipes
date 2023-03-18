@@ -17,7 +17,6 @@ import java.util.List;
 
 class RecipeViewHolder extends RecyclerView.ViewHolder {
     TextView recipeName;
-    TextView recipeOwner;
     ImageButton deleteRecipeBtn;
     ImageButton editRecipeBtn;
     List<Recipe> recipes;
@@ -29,7 +28,6 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         this.recipes = recipes;
         this.hasAccess = hasAccess;
         recipeName = itemView.findViewById(R.id.recipe_list_recipe_name);
-        recipeOwner = itemView.findViewById(R.id.recipe_list_recipe_owner);
         deleteRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_delete_btn);
         editRecipeBtn = itemView.findViewById(R.id.recipe_list_recipe_edit_btn);
         recipeImage = itemView.findViewById(R.id.recipe_list_recipe_image);
@@ -47,14 +45,14 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
                 listenerEdit.onItemClick(getRecipeByPosition());
             }
         });
+
     }
 
     public void bind(Recipe recipe, int pos) {
         recipeName.setText(recipe.name);
-//        recipeOwner.setText(recipe.owner);
-        int RecipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
-        deleteRecipeBtn.setVisibility(RecipeActionsStatus);
-        editRecipeBtn.setVisibility(RecipeActionsStatus);
+        int recipeActionsStatus = hasAccess ? View.VISIBLE : View.GONE;
+        deleteRecipeBtn.setVisibility(recipeActionsStatus);
+        editRecipeBtn.setVisibility(recipeActionsStatus);
         ImageHelper.insertImageByUrl(recipe,recipeImage);
     }
 
@@ -84,6 +82,11 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         this.inflater = inflater;
         this.recipes = recipes;
         this.hasAccess = hasAccess;
+    }
+
+    public void setRecipes(List<Recipe> recipes){
+        this.recipes = recipes;
+        notifyDataSetChanged();
     }
 
     void setOnItemClickListener(OnItemClickListener listener) {

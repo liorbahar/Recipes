@@ -6,31 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".fragments.RecipesListFragment">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipes_list_fragment_ls"
-        android:layout_width="364dp"
-        android:layout_height="566dp"
+        android:layout_width="368dp"
+        android:layout_height="476dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.432"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.886" />
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <SearchView
         android:id="@+id/fragment_recipes_list_search"
-        android:layout_width="340dp"
-        android:layout_height="78dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="352dp"
+        android:layout_height="61dp"
         android:iconifiedByDefault="false"
         android:queryHint="Search here"
         app:layout_constraintBottom_toTopOf="@+id/recipes_list_fragment_ls"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.271"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178">
+        app:layout_constraintVertical_bias="0.326">
 
         <requestFocus />
     </SearchView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

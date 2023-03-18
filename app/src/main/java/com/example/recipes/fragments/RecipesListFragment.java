@@ -26,6 +26,7 @@ public class RecipesListFragment extends Fragment {
     private List<Recipe> recipes = new ArrayList<>();
     private Boolean hasAccess = true;
     private FragmentRecipesListBinding binding;
+    private RecipeRecyclerAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,9 @@ public class RecipesListFragment extends Fragment {
 
         binding.recipesListFragmentLs.setHasFixedSize(true);
         binding.recipesListFragmentLs.setLayoutManager(new LinearLayoutManager(getContext()));
-        RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
-        binding.recipesListFragmentLs.setAdapter(adapter);
+        this.adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
+        binding.recipesListFragmentLs.setAdapter(this.adapter);
+
 
         adapter.setOnItemClickListener(new RecipeRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -77,16 +79,14 @@ public class RecipesListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String recipeNameSearch) {
                 List<Recipe> matchRecipes = searchRecipesByName(recipeNameSearch);
-                RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), matchRecipes, hasAccess);
-                binding.recipesListFragmentLs.setAdapter(adapter);
+                adapter.setRecipes(matchRecipes);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String recipeNameSearch) {
                 List<Recipe> matchRecipes = searchRecipesByName(recipeNameSearch);
-                RecipeRecyclerAdapter adapter = new RecipeRecyclerAdapter(getLayoutInflater(), matchRecipes, hasAccess);
-                binding.recipesListFragmentLs.setAdapter(adapter);
+                adapter.setRecipes(matchRecipes);
                 return true;
             }
         });
@@ -106,6 +106,9 @@ public class RecipesListFragment extends Fragment {
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
+        if (this.adapter != null) {
+            this.adapter.setRecipes(recipes);
+        }
     }
 
 }
