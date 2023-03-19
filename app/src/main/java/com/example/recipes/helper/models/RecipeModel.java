@@ -2,18 +2,24 @@ package com.example.recipes.helper.models;
 
 import java.util.concurrent.Executor;
 
-import android.graphics.Bitmap;
-import android.os.Handler;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.recipes.database.RecipesFirebaseHandler;
 import com.example.recipes.helper.models.interfaces.IRecipeModel;
 import com.example.recipes.localdatabase.AppLocalDbRepository;
+import com.example.recipes.models.api.RandomRecipeApiResult;
 import com.example.recipes.models.Recipe;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RecipeModel implements IRecipeModel {
     private final Executor executor;
@@ -22,10 +28,21 @@ public class RecipeModel implements IRecipeModel {
     private LiveData<List<Recipe>> recipesList;
     private LiveData<List<Recipe>> userRecipesList;
 
+    Retrofit retrofit;
+    RecipeApi recipeApi;
+
 
     public RecipeModel(Executor executor, AppLocalDbRepository localDb) {
         this.executor = executor;
         this.localDb = localDb;
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.spoonacular.com")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        recipeApi = retrofit.create(RecipeApi.class);
     }
 
     public interface GetAllRecipesListener {
@@ -38,6 +55,7 @@ public class RecipeModel implements IRecipeModel {
     }
     final public MutableLiveData<LoadingState> EventRecipesListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
     final public MutableLiveData<LoadingState> EventUserRecipesListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+    final public MutableLiveData<LoadingState> EventSpecialRandomRecipeLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
 
     public LiveData<List<Recipe>> getUserRecipes(String userId) {
@@ -99,4 +117,28 @@ public class RecipeModel implements IRecipeModel {
             });
         });
     }
+
+
+        public LiveData<Recipe> getRandomRecipe(){
+            EventSpecialRandomRecipeLoadingState.setValue(LoadingState.LOADING);
+            MutableLiveData<Recipe> data = new MutableLiveData<>();
+            Call<RandomRecipeApiResult> call = this.recipeApi.getRandomRecipe();
+            call.enqueue(new Callback<RandomRecipeApiResult>() {
+                @Override
+                public void onResponse(Call<RandomRecipeApiResult> call, Response<RandomRecipeApiResult> response) {
+                    if (response.isSuccessful()){
+                        RandomRecipeApiResult res = response.body();
+                        data.setValue(res.getRecipe().toRecipe());
+                    }
+                    EventSpecialRandomRecipeLoadingState.postValue(LoadingState.NOT_LOADING);
+                }
+
+                @Override
+                public void onFailure(Call<RandomRecipeApiResult> call, Throwable t) {
+                    EventSpecialRandomRecipeLoadingState.postValue(LoadingState.NOT_LOADING);
+                }
+            });
+            return data;
+        }
+
 }

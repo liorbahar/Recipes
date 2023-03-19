@@ -12,7 +12,12 @@ import com.squareup.picasso.Picasso;
 public class ImageHelper {
     public static void insertImageByUrl(IImageModel imageModel, ImageView imageView) {
         if (!imageModel.getAvatarUrl().equals("")) {
-            Picasso.get().load(imageModel.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(imageView);
+            try {
+                Picasso.get().load(imageModel.getAvatarUrl()).placeholder(R.drawable.add_image_avatar).into(imageView);
+            }
+            catch (Exception e){
+                imageView.setImageResource(R.drawable.add_image_avatar);
+            }
         } else {
             imageView.setImageResource(R.drawable.add_image_avatar);
         }

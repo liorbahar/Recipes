@@ -12,4 +12,8 @@
         android:id="@+id/addRecipeFragment"
         android:icon="@android:drawable/ic_input_add"
         android:title="Add" />
+    <item
+        android:id="@+id/specialRecipe"
+        android:icon="@android:drawable/star_big_on"
+        android:title="Special Recipe" />
 </menu>

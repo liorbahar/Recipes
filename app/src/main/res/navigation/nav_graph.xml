@@ -92,4 +92,9 @@
         android:name="com.example.recipes.fragments.EditUserProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_user_profile" />
+    <fragment
+        android:id="@+id/specialRecipe"
+        android:name="com.example.recipes.fragments.SpecialRandomRecipeFragment"
+        android:label="Special Recipe"
+        tools:layout="@layout/fragment_special_random_recipe" />
 </navigation>
