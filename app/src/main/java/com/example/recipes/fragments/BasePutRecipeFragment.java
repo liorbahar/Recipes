@@ -127,7 +127,7 @@ public class BasePutRecipeFragment extends Fragment {
     private void addRecipeAndNavigate(Recipe recipe, View view) {
         ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
             Navigation.findNavController(view).popBackStack();
-            Navigation.findNavController(view).navigate(R.id.recipesListPageFragment);
+            Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });
     }
 

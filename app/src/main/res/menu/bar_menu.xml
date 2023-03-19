@@ -16,4 +16,8 @@
         android:id="@+id/specialRecipe"
         android:icon="@android:drawable/star_big_on"
         android:title="Special Recipe" />
+    <item
+        android:id="@+id/viewUserProfileFragment"
+        android:icon="@drawable/user_profile_avatar"
+        android:title="Profile" />
 </menu>

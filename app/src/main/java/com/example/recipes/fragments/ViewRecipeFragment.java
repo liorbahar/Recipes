@@ -13,8 +13,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,14 +36,12 @@ public class ViewRecipeFragment extends Fragment {
         return view;
     }
 
-    private Void showRecipeDetails(Recipe recipe, FragmentViewRecipeBinding binding) {
+    private void showRecipeDetails(Recipe recipe, FragmentViewRecipeBinding binding) {
         binding.recipeNameTv.setText(recipe.getName());
         binding.recipeBodyTv.setText(recipe.getBody());
         ImageHelper.insertImageByUrl(recipe, binding.recipeImage);
 
         binding.recipeNameTv.setEnabled(false);
         binding.recipeBodyTv.setEnabled(false);
-
-        return null;
     }
 }

@@ -108,7 +108,7 @@ public class EditUserProfileFragment extends Fragment {
         ModelClient.instance().users.editUser(user, (unused) -> {
             ModelClient.instance().users.refreshCurrentUser();
             Navigation.findNavController(view).popBackStack();
-            Navigation.findNavController(view).navigate(R.id.recipesListPageFragment);
+            Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });
     }
 }

@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
-//
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
-//                .Builder(R.id.recipesListPageFragment, R.id.addRecipeFragment, R.id.specialRecipe)
-//                .build();
 
-        NavigationUI.setupActionBarWithNavController(this, navController);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
+                .Builder(R.id.recipesListPageFragment,R.id.recipesUserListPageFragment ,R.id.addRecipeFragment, R.id.specialRecipe, R.id.viewUserProfileFragment)
+                .build();
+
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
 
@@ -52,11 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int currentFragmentId = navController.getCurrentDestination().getId();
-        if (currentFragmentId == R.id.viewUserProfileFragment){
-            navController.popBackStack();
-            navController.navigate(R.id.recipesListPageFragment);
-        } else if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
         } else {
             fragmentMenuId = item.getItemId();
