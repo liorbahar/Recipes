@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,13 @@ import android.widget.SearchView;
 
 
 import com.example.recipes.MainActivity;
-import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
+import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class RecipesListFragment extends Fragment {
     private List<Recipe> recipes = new ArrayList<>();
@@ -68,9 +67,22 @@ public class RecipesListFragment extends Fragment {
         adapter.setOnEditButtonClickListener(new RecipeRecyclerAdapter.OnEditButtonClickListener() {
             @Override
             public void onItemClick(String recipeId) {
-                //get userId from context when have login
                 UserRecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = UserRecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(recipeId);
                 Navigation.findNavController(view).navigate(action);
+            }
+        });
+
+        adapter.setOnDeleteButtonClickListener(new RecipeRecyclerAdapter.OnDeleteButtonClickListener() {
+            @Override
+            public void onItemClick(String recipeId) {
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Recipe recipe = ModelClient.instance().recipes.getRecipe(recipeId);
+                        ModelClient.instance().recipes.RemoveRecipe(recipe, (unused) -> {
+                        });
+                    }
+                });
             }
         });
 
