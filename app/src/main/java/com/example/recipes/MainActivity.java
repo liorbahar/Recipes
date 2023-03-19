@@ -23,13 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
-        NavigationUI.setupActionBarWithNavController(this, navController);
 
+
+        NavigationUI.setupActionBarWithNavController(this, navController);
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
 
-        if (!ModelClient.instance().users.isUserLogIn()) {
-            navController.navigate(R.id.action_recipesListPageFragment_to_loginFragment);
+        if (ModelClient.instance().users.isUserLogIn()) {
+            navController.navigate(R.id.action_loginFragment_to_recipesListPageFragment);
         }
     }
 
@@ -67,5 +68,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void showSupportActionBar() {
         getSupportActionBar().show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        int id = navController.getCurrentDestination().getId();
+
+        switch (id){
+            case R.id.loginFragment:
+                finish();
+                break;
+            case R.id.registerFragment:
+                navController.navigate(R.id.loginFragment);
+                break;
+            default:
+                navController.navigate(R.id.recipesListPageFragment);
+        }
     }
 }
