@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.loginFragment);
                 break;
             default:
-                navController.popBackStack();
+                //navController.popBackStack();
                 navController.navigate(R.id.recipesListPageFragment);
         }
     }

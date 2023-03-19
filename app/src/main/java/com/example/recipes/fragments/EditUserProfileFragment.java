@@ -1,7 +1,6 @@
 package com.example.recipes.fragments;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -108,7 +107,7 @@ public class EditUserProfileFragment extends Fragment {
         ModelClient.instance().users.editUser(user, (unused) -> {
             ModelClient.instance().users.refreshCurrentUser();
             Navigation.findNavController(view).popBackStack();
-            Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
+            Navigation.findNavController(view).navigate(R.id.viewUserProfileFragment);
         });
     }
 }
