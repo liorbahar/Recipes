@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
@@ -24,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
 
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
+                .Builder(R.id.recipesListPageFragment,R.id.recipesUserListPageFragment ,R.id.addRecipeFragment, R.id.specialRecipe, R.id.viewUserProfileFragment)
+                .build();
 
-        NavigationUI.setupActionBarWithNavController(this, navController);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
 
@@ -48,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
         } else {
@@ -70,19 +73,4 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().show();
     }
 
-    @Override
-    public void onBackPressed() {
-        int id = navController.getCurrentDestination().getId();
-
-        switch (id){
-            case R.id.loginFragment:
-                finish();
-                break;
-            case R.id.registerFragment:
-                navController.navigate(R.id.loginFragment);
-                break;
-            default:
-                navController.navigate(R.id.recipesListPageFragment);
-        }
-    }
 }

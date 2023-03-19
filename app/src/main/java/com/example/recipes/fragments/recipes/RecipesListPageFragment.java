@@ -1,4 +1,4 @@
-package com.example.recipes.fragments;
+package com.example.recipes.fragments.recipes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,34 +12,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipes.R;
-import com.example.recipes.databinding.FragmentUserRecipesListPageBinding;
-import com.example.recipes.fragments.views.UserRecipesListPageFragmentViewModel;
+import com.example.recipes.databinding.FragmentRecipesListPageBinding;
+import com.example.recipes.fragments.recipes.views.RecipesListPageFragmentViewModel;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.RecipeModel;
 import com.example.recipes.models.Recipe;
-import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
-public class UserRecipesListPageFragment extends Fragment {
+public class RecipesListPageFragment extends Fragment {
     private RecipesListFragment recipesListFragment;
-    private UserRecipesListPageFragmentViewModel viewModel;
-    private FragmentUserRecipesListPageBinding binding;
-    private String userUuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private RecipesListPageFragmentViewModel viewModel;
+    private FragmentRecipesListPageBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = FragmentUserRecipesListPageBinding.inflate(inflater,container, false);
+       //  Inflate the layout for this fragment
+        binding = FragmentRecipesListPageBinding.inflate(inflater , container, false);
         View view = binding.getRoot();
         this.showRecipesList();
 
-        binding.swipeUserRecipesRefresh.setOnRefreshListener(()->{
-            ModelClient.instance().recipes.refreshUserRecipes(this.userUuid);
+        binding.swipeRefresh.setOnRefreshListener(()->{
+            ModelClient.instance().recipes.refreshAllRecipes();
         });
 
-        ModelClient.instance().recipes.EventUserRecipesListLoadingState.observe(getViewLifecycleOwner(),status->{
-            binding.swipeUserRecipesRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+        ModelClient.instance().recipes.EventRecipesListLoadingState.observe(getViewLifecycleOwner(),status->{
+            binding.swipeRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
 
             if (status == RecipeModel.LoadingState.NOT_LOADING){
                 this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
@@ -54,22 +53,20 @@ public class UserRecipesListPageFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        viewModel = new ViewModelProvider(this).get(UserRecipesListPageFragmentViewModel.class);
+        viewModel = new ViewModelProvider(this).get(RecipesListPageFragmentViewModel.class);
     }
 
     private void showRecipesList() {
         this.recipesListFragment = new RecipesListFragment();
-
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_user_recipes_list_page_container, this.recipesListFragment)
+                .replace(R.id.fragment_recipes_list_page_container, this.recipesListFragment)
                 .commit();
-
         if (this.viewModel.getRecipes().getValue() != null) {
             this.recipesListFragment.setRecipes(this.viewModel.getRecipes().getValue());
         }
         Bundle bundle = new Bundle();
-        bundle.putBoolean("hasAccess", true);
+        bundle.putBoolean("hasAccess", false);
         this.recipesListFragment.setArguments(bundle);
     }
 }

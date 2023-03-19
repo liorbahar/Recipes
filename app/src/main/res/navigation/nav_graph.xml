@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipesListPageFragment"
-        android:name="com.example.recipes.fragments.RecipesListPageFragment"
+        android:name="com.example.recipes.fragments.recipes.RecipesListPageFragment"
         android:label="All Recipes List"
         tools:layout="@layout/fragment_recipes_list_page">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipesUserListPageFragment"
-        android:name="com.example.recipes.fragments.UserRecipesListPageFragment"
+        android:name="com.example.recipes.fragments.recipes.UserRecipesListPageFragment"
         android:label="My Recipes List"
         tools:layout="@layout/fragment_user_recipes_list_page">
         <action
@@ -54,12 +54,12 @@
     </fragment>
     <fragment
         android:id="@+id/addRecipeFragment"
-        android:name="com.example.recipes.fragments.BasePutRecipeFragment"
+        android:name="com.example.recipes.fragments.recipes.BasePutRecipeFragment"
         android:label="Add Recipe"
         tools:layout="@layout/fragment_base_put_recipe" />
     <fragment
         android:id="@+id/editRecipesFragment"
-        android:name="com.example.recipes.fragments.BasePutRecipeFragment"
+        android:name="com.example.recipes.fragments.recipes.BasePutRecipeFragment"
         android:label="Edit Recipe"
         tools:layout="@layout/fragment_base_put_recipe">
         <argument
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewRecipesFragment"
-        android:name="com.example.recipes.fragments.ViewRecipeFragment"
+        android:name="com.example.recipes.fragments.recipes.ViewRecipeFragment"
         android:label="View Recipe"
         tools:layout="@layout/fragment_view_recipe">
         <argument
@@ -94,7 +94,7 @@
         tools:layout="@layout/fragment_edit_user_profile" />
     <fragment
         android:id="@+id/specialRecipe"
-        android:name="com.example.recipes.fragments.SpecialRandomRecipeFragment"
+        android:name="com.example.recipes.fragments.recipes.SpecialRandomRecipeFragment"
         android:label="Special Recipe"
         tools:layout="@layout/fragment_special_random_recipe" />
 </navigation>
