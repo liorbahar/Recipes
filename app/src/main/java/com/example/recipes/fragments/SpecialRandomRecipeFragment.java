@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipes.databinding.FragmentSpecialRandomRecipeBinding;
+import com.example.recipes.databinding.FragmentViewRecipeBinding;
 import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.RecipeModel;
@@ -18,6 +19,7 @@ import com.example.recipes.models.Recipe;
 
 public class SpecialRandomRecipeFragment extends Fragment {
     FragmentSpecialRandomRecipeBinding binding;
+    FragmentViewRecipeBinding fragmentViewRecipeBinding;
     LiveData<Recipe> recipeLiveData;
 
     @Override
@@ -26,6 +28,7 @@ public class SpecialRandomRecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSpecialRandomRecipeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        fragmentViewRecipeBinding = FragmentViewRecipeBinding.bind(view);
 
         binding.swipeSpecialRandomRefresh.setOnRefreshListener(()->{
             recipeLiveData = ModelClient.instance().recipes.getRandomRecipe();
@@ -36,19 +39,19 @@ public class SpecialRandomRecipeFragment extends Fragment {
             binding.swipeSpecialRandomRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
 
             if (status == RecipeModel.LoadingState.NOT_LOADING){
-                recipeLiveData.observe(getViewLifecycleOwner(), this::showRecipeDetails);            }
+                recipeLiveData.observe(getViewLifecycleOwner(), this::showRecipeDetails);
+            }
         });
 
         return view;
     }
 
-    private Void showRecipeDetails(Recipe recipe) {
-        binding.recipeNameTv.setText(recipe.getName());
-        binding.recipeBodyTv.setText(recipe.getBody());
-        ImageHelper.insertImageByUrl(recipe, binding.recipeImage);
-        binding.recipeNameTv.setEnabled(false);
-        binding.recipeBodyTv.setEnabled(false);
-        return null;
+    private void showRecipeDetails(Recipe recipe) {
+        fragmentViewRecipeBinding.recipeNameTv.setText(recipe.getName());
+        fragmentViewRecipeBinding.recipeBodyTv.setText(recipe.getBody());
+        ImageHelper.insertImageByUrl(recipe, fragmentViewRecipeBinding.recipeImage);
+        fragmentViewRecipeBinding.recipeNameTv.setEnabled(false);
+        fragmentViewRecipeBinding.recipeBodyTv.setEnabled(false);
     }
 
     @Override

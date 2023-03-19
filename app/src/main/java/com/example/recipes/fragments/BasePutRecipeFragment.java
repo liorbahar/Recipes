@@ -79,7 +79,11 @@ public class BasePutRecipeFragment extends Fragment {
             this.onSaveStudentClick(binding, view1);
         });
 
-        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.recipesListPageFragment, false));
+        binding.cancelBtn.setOnClickListener(view1 -> {
+            Navigation.findNavController(view1).popBackStack();
+            Navigation.findNavController(view1).navigate(R.id.recipesListPageFragment);
+
+        });
         setHasOptionsMenu(true);
 
         binding.cameraButton.setOnClickListener(view1 -> {
@@ -123,6 +127,7 @@ public class BasePutRecipeFragment extends Fragment {
     private void addRecipeAndNavigate(Recipe recipe, View view) {
         ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
             Navigation.findNavController(view).popBackStack();
+            Navigation.findNavController(view).navigate(R.id.recipesListPageFragment);
         });
     }
 

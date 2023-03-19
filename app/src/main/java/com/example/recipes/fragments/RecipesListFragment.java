@@ -51,7 +51,6 @@ public class RecipesListFragment extends Fragment {
         this.adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
         binding.recipesListFragmentLs.setAdapter(this.adapter);
 
-
         adapter.setOnItemClickListener(new RecipeRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String recipeId) {

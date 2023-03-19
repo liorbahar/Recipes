@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
@@ -23,7 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
-
+//
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
+//                .Builder(R.id.recipesListPageFragment, R.id.addRecipeFragment, R.id.specialRecipe)
+//                .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController);
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
@@ -48,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
+        int currentFragmentId = navController.getCurrentDestination().getId();
+        if (currentFragmentId == R.id.viewUserProfileFragment){
+            navController.popBackStack();
+            navController.navigate(R.id.recipesListPageFragment);
+        } else if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
         } else {
             fragmentMenuId = item.getItemId();
@@ -79,9 +86,11 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.registerFragment:
+                navController.popBackStack();
                 navController.navigate(R.id.loginFragment);
                 break;
             default:
+                navController.popBackStack();
                 navController.navigate(R.id.recipesListPageFragment);
         }
     }
