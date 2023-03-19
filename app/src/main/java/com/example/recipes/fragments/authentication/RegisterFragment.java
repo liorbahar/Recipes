@@ -7,6 +7,7 @@ import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.UserModel;
 import com.example.recipes.models.User;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -18,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +63,8 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        this.listenToBackButtonClick(view);
+
         return view;
     }
 
@@ -84,5 +88,15 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getContext(),err,Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void listenToBackButtonClick(View view) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(view).popBackStack();
+                Navigation.findNavController(view).navigate(R.id.loginFragment);            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 }

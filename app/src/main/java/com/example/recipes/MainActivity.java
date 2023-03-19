@@ -73,21 +73,4 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().show();
     }
 
-    @Override
-    public void onBackPressed() {
-        int id = navController.getCurrentDestination().getId();
-
-        switch (id){
-            case R.id.loginFragment:
-                finish();
-                break;
-            case R.id.registerFragment:
-                navController.popBackStack();
-                navController.navigate(R.id.loginFragment);
-                break;
-            default:
-                //navController.popBackStack();
-                navController.navigate(R.id.recipesListPageFragment);
-        }
-    }
 }

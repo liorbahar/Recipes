@@ -1,12 +1,12 @@
-package com.example.recipes.fragments;
+package com.example.recipes.fragments.recipes;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +14,9 @@ import android.widget.SearchView;
 
 
 import com.example.recipes.MainActivity;
-import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
+import com.example.recipes.helper.DialogsHelper;
 import com.example.recipes.models.Recipe;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +89,8 @@ public class RecipesListFragment extends Fragment {
             }
         });
 
+        this.listenToBackButtonClick();
+
         return view;
     }
 
@@ -108,6 +109,16 @@ public class RecipesListFragment extends Fragment {
         if (this.adapter != null) {
             this.adapter.setRecipes(recipes);
         }
+    }
+
+    private void listenToBackButtonClick(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                DialogsHelper.getDialog(getContext(), getActivity()).show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
 }

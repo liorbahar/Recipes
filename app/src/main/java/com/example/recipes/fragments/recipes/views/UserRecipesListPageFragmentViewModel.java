@@ -1,4 +1,4 @@
-package com.example.recipes.fragments.views;
+package com.example.recipes.fragments.recipes.views;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
