@@ -11,4 +11,6 @@ public interface IRecipeModel {
     LiveData<List<Recipe>> getUserRecipes(String userId);
 
     void addRecipe(Recipe recipe, ModelClient.Listener listener);
+
+    LiveData<Recipe> getRandomRecipe();
 }

@@ -13,6 +13,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,7 +35,6 @@ public class ViewRecipeFragment extends Fragment {
         String recipeId = getArguments().getString("recipeId");
         Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
         this.showRecipeDetails(data, binding);
-
         return view;
     }
 
