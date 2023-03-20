@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipes.R;
-import com.example.recipes.helper.ImageHelper;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.utils.ImageHelper;
+import com.example.recipes.dto.Recipe;
 import java.util.List;
 
 class RecipeViewHolder extends RecyclerView.ViewHolder {

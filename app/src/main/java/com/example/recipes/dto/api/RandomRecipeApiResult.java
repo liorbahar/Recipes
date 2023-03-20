@@ -1,4 +1,4 @@
-package com.example.recipes.models.api;
+package com.example.recipes.dto.api;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

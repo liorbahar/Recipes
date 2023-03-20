@@ -15,8 +15,8 @@ import android.widget.SearchView;
 
 import com.example.recipes.MainActivity;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
-import com.example.recipes.helper.ExistApplicationDialog;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.dto.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;

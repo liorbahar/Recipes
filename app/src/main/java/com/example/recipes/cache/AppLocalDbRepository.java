@@ -1,10 +1,10 @@
-package com.example.recipes.localdatabase;
+package com.example.recipes.cache;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-import com.example.recipes.models.Recipe;
-import com.example.recipes.models.User;
+import com.example.recipes.dto.Recipe;
+import com.example.recipes.dto.User;
 
 @Database(entities = {User.class, Recipe.class}, version = 85)
 public abstract class AppLocalDbRepository extends RoomDatabase {

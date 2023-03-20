@@ -1,12 +1,15 @@
-package com.example.recipes.helper.models;
+package com.example.recipes.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.example.recipes.localdatabase.AppLocalDb;
-import com.example.recipes.localdatabase.AppLocalDbRepository;
+import com.example.recipes.model.interfaces.IRecipeModel;
+import com.example.recipes.model.interfaces.ISpecialRandomRecipeModel;
+import com.example.recipes.model.interfaces.IUserModel;
+import com.example.recipes.cache.AppLocalDb;
+import com.example.recipes.cache.AppLocalDbRepository;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -23,10 +26,9 @@ public class ModelClient {
     private AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     public FirebaseStorage storage = FirebaseStorage.getInstance();
 
-
-    public UserModel users;
-    public RecipeModel recipes;
-
+    public IUserModel users;
+    public IRecipeModel recipes;
+    public ISpecialRandomRecipeModel randomRecipe;
 
     public static ModelClient instance() {
         return _instance;
@@ -36,9 +38,15 @@ public class ModelClient {
         void onComplete(T data);
     }
 
+    public enum LoadingState {
+        LOADING,
+        NOT_LOADING
+    }
+
     private ModelClient() {
         this.users = new UserModel(executor, localDb);
         this.recipes = new RecipeModel(executor, localDb);
+        this.randomRecipe = new SpecialRandomRecipeModel();
     }
 
     public void uploadImage(String name, Bitmap bitmap, ModelClient.Listener<String> listener) {

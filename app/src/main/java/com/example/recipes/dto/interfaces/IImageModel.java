@@ -1,4 +1,4 @@
-package com.example.recipes.models.interfaces;
+package com.example.recipes.dto.interfaces;
 
 public interface IImageModel {
     public String getAvatarUrl();

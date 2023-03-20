@@ -1,7 +1,7 @@
-package com.example.recipes.models.api;
+package com.example.recipes.dto.api;
 
 
-import com.example.recipes.models.Recipe;
+import com.example.recipes.dto.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.annotations.SerializedName;
 

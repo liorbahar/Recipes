@@ -1,4 +1,4 @@
-package com.example.recipes.localdatabase;
+package com.example.recipes.cache;
 
 import com.example.recipes.MyApplication;
 import androidx.room.Room;

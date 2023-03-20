@@ -1,4 +1,4 @@
-package com.example.recipes.helper;
+package com.example.recipes.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;

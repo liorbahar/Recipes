@@ -3,9 +3,10 @@ package com.example.recipes.fragments.authentication;
 import com.example.recipes.MainActivity;
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentLogInBinding;
-import com.example.recipes.helper.ExistApplicationDialog;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.UserModel;
+import com.example.recipes.model.interfaces.AuthenticationListener;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.UserModel;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -66,7 +67,7 @@ public class LogInFragment extends Fragment {
         pd.setMessage("Please wait...");
         pd.show();
 
-        ModelClient.instance().users.loginUser(email, password, new UserModel.LoginListener() {
+        ModelClient.instance().users.loginUser(email, password, new AuthenticationListener() {
             @Override
             public void onComplete() {
                 pd.dismiss();

@@ -1,31 +1,22 @@
 package com.example.recipes.database;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import androidx.annotation.NonNull;
 
 import com.example.recipes.database.interfaces.IRecipesDBHandler;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.RecipeModel;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.RecipeModel;
+import com.example.recipes.dto.Recipe;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import java.io.ByteArrayOutputStream;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class RecipesFirebaseHandler implements IRecipesDBHandler{
+public class RecipesFirebaseHandler implements IRecipesDBHandler {
     public FirebaseFirestore db;
 
     public RecipesFirebaseHandler(){
@@ -36,7 +27,7 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler{
         db.setFirestoreSettings(settings);
     }
 
-    public void getAllRecipes(RecipeModel.GetAllRecipesListener callback) {
+    public void getAllRecipes(ModelClient.Listener callback) {
         db.collection(Recipe.COLLECTION)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -55,7 +46,7 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler{
                 });
     }
 
-    public void getRecipesOfUser(String userId, RecipeModel.GetAllRecipesListener callback) {
+    public void getRecipesOfUser(String userId, ModelClient.Listener callback) {
         db.collection(Recipe.COLLECTION)
                 .whereEqualTo("userId", userId)
                 .get()

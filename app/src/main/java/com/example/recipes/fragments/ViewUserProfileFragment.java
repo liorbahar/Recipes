@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentViewUserProfileBinding;
-import com.example.recipes.helper.ExistApplicationDialog;
-import com.example.recipes.helper.UserProfileHelper;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.models.User;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.utils.UserProfileHelper;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.dto.User;
 
 public class ViewUserProfileFragment extends Fragment {
     FragmentViewUserProfileBinding binding;

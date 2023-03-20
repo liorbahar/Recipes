@@ -2,10 +2,10 @@ package com.example.recipes.fragments.recipes;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentBasePutRecipeBinding;
-import com.example.recipes.helper.ExistApplicationDialog;
-import com.example.recipes.helper.ImageHelper;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.utils.ImageHelper;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.dto.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.activity.OnBackPressedCallback;

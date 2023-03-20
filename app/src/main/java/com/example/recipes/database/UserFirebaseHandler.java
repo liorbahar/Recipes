@@ -2,9 +2,11 @@ package com.example.recipes.database;
 
 import androidx.annotation.NonNull;
 
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.UserModel;
-import com.example.recipes.models.User;
+import com.example.recipes.database.interfaces.IUserDBHandler;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.UserModel;
+import com.example.recipes.dto.User;
+import com.example.recipes.model.interfaces.AuthenticationListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.Map;
 
-public class UserFirebaseHandler {
+public class UserFirebaseHandler implements IUserDBHandler {
     public FirebaseFirestore db;
     public FirebaseAuth firebaseAuth;
 
@@ -28,7 +30,7 @@ public class UserFirebaseHandler {
     }
 
 
-    public void getCurrentUser(UserModel.GetCurrentUserListener listener) {
+    public void getCurrentUser(ModelClient.Listener<User> listener) {
         db.collection(User.COLLECTION_NAME).document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
             User user = new User();
             if (task.isSuccessful()) {
@@ -55,7 +57,7 @@ public class UserFirebaseHandler {
     }
 
 
-    public void registerUser(User user, String password, UserModel.RegisterListener listener) {
+    public void registerUser(User user, String password, AuthenticationListener listener) {
         this.firebaseAuth.createUserWithEmailAndPassword(user.email, password)
                 .addOnSuccessListener(authResult -> {
                     db.collection(User.COLLECTION_NAME).document(firebaseAuth.getCurrentUser().getUid()).set(user.toJson()).addOnCompleteListener(task -> {
@@ -73,7 +75,7 @@ public class UserFirebaseHandler {
         this.firebaseAuth.signOut();
     }
 
-    public void loginUser(String email, String password, UserModel.LoginListener listener) {
+    public void loginUser(String email, String password, AuthenticationListener listener) {
         this.firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 listener.onComplete();

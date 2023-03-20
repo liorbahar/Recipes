@@ -3,8 +3,8 @@ package com.example.recipes.fragments.recipes.views;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.dto.Recipe;
 
 import java.util.List;
 
