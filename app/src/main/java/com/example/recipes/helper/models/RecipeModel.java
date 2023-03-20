@@ -71,6 +71,11 @@ public class RecipeModel implements IRecipeModel {
         this.refreshUserRecipes(recipe.userId);
     }
 
+    public void RemoveRecipe(Recipe recipe, ModelClient.Listener listener) {
+        this.recipesFirebaseHandler.deleteRecipe(recipe.id, listener);
+        this.localDb.recipesDao().delete(recipe.id);
+    }
+
     public void refreshUserRecipes(String userId) {
         EventUserRecipesListLoadingState.setValue(LoadingState.LOADING);
         this.recipesFirebaseHandler.getRecipesOfUser(userId, (List<Recipe> recipes) -> {
@@ -90,21 +95,6 @@ public class RecipeModel implements IRecipeModel {
         }
         return this.recipesList;
     }
-
-    public Recipe getRecipe(String recipeId) {
-        if (this.recipesList == null) {
-            this.recipesList = this.localDb.recipesDao().getAll();
-            this.refreshAllRecipes();
-        }
-        for (Recipe recipe : this.recipesList.getValue()) {
-            if (recipe.getId().equals(recipeId)) {
-                return recipe;
-            }
-        }
-
-        return null;
-    }
-
 
     public void refreshAllRecipes() {
         EventRecipesListLoadingState.setValue(LoadingState.LOADING);
