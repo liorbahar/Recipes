@@ -1,4 +1,4 @@
-package com.example.recipes.fragments;
+package com.example.recipes.fragments.users;
 
 import android.os.Bundle;
 
