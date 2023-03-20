@@ -24,4 +24,6 @@ public interface IRecipeModel {
     Recipe getRecipe(String recipeId);
 
     void refreshUserRecipes(String userId);
+
+    void removeRecipe(Recipe recipe, ModelClient.Listener listener);
 }

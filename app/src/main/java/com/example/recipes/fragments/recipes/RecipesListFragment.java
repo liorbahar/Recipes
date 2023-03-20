@@ -19,10 +19,8 @@ import com.example.recipes.MainActivity;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
 import com.example.recipes.utils.ExistApplicationDialog;
 import com.example.recipes.dto.Recipe;
-import com.example.recipes.utils.ExistApplicationDialog;
 import com.example.recipes.model.ModelClient;
 import java.util.concurrent.Executors;
-import com.example.recipes.dto.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +86,7 @@ public class RecipesListFragment extends Fragment {
                             Executors.newSingleThreadExecutor().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ModelClient.instance().recipes.RemoveRecipe(recipe, (unused) -> {
+                                    ModelClient.instance().recipes.removeRecipe(recipe, (unused) -> {
                                     });
                                 }
                             });
