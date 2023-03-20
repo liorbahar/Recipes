@@ -16,6 +16,7 @@ import android.widget.SearchView;
 import com.example.recipes.MainActivity;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
 import com.example.recipes.helper.DialogsHelper;
+import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
 import java.util.concurrent.Executors;
 
