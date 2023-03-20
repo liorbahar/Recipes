@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewUserProfileFragment"
-        android:name="com.example.recipes.fragments.ViewUserProfileFragment"
+        android:name="com.example.recipes.fragments.users.ViewUserProfileFragment"
         android:label="View Profile"
         tools:layout="@layout/fragment_view_user_profile">
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/editUserProfileFragment"
-        android:name="com.example.recipes.fragments.EditUserProfileFragment"
+        android:name="com.example.recipes.fragments.users.EditUserProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_user_profile" />
     <fragment
