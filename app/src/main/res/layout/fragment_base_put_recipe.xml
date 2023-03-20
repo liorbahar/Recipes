@@ -33,7 +33,7 @@
                     android:id="@+id/basePutRecipeNameEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:hint="recipe name" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +49,7 @@
                     android:id="@+id/basePutRecipeBodyEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:hint="recipe Body" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#68868E"
+                    android:backgroundTint="#2F363C"
                     android:text="SAVE" />
 
                 <Button
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#68868E"
+                    android:backgroundTint="#2F363C"
                     android:text="CANCEL" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 

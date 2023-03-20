@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeActionBarBackgroundColor() {
         ActionBar actionBar = getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#68868E"));
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#085063"));
         actionBar.setBackgroundDrawable(colorDrawable);
     }
 

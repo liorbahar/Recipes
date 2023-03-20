@@ -23,6 +23,8 @@
         android:layout_height="61dp"
         android:iconifiedByDefault="false"
         android:queryHint="Search here"
+        android:textColor="#085063"
+        android:theme="@style/SearchViewLayout"
         app:layout_constraintBottom_toTopOf="@+id/recipes_list_fragment_ls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.271"
