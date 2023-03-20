@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.recipes.databinding.FragmentSpecialRandomRecipeBinding;
 import com.example.recipes.databinding.FragmentViewRecipeBinding;
-import com.example.recipes.helper.DialogsHelper;
+import com.example.recipes.helper.ExistApplicationDialog;
 import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.RecipeModel;
@@ -69,7 +69,7 @@ public class SpecialRandomRecipeFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                DialogsHelper.getDialog(getContext(), getActivity()).show();
+                new ExistApplicationDialog(getContext(), getActivity()).show();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

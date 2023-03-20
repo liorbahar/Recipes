@@ -3,7 +3,7 @@ package com.example.recipes.fragments.authentication;
 import com.example.recipes.MainActivity;
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentLogInBinding;
-import com.example.recipes.helper.DialogsHelper;
+import com.example.recipes.helper.ExistApplicationDialog;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.UserModel;
 
@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +86,7 @@ public class LogInFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                DialogsHelper.getDialog(getContext(), getActivity()).show();
+                new ExistApplicationDialog(getContext(), getActivity()).show();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

@@ -15,7 +15,7 @@ import android.widget.SearchView;
 
 import com.example.recipes.MainActivity;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
-import com.example.recipes.helper.DialogsHelper;
+import com.example.recipes.helper.ExistApplicationDialog;
 import com.example.recipes.models.Recipe;
 
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class RecipesListFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                DialogsHelper.getDialog(getContext(), getActivity()).show();
+                new ExistApplicationDialog(getContext(), getActivity()).show();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
