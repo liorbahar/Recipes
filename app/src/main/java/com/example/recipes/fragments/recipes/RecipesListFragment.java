@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,14 +79,20 @@ public class RecipesListFragment extends Fragment {
         adapter.setOnDeleteButtonClickListener(new RecipeRecyclerAdapter.OnDeleteButtonClickListener() {
             @Override
             public void onItemClick(String recipeId) {
-                Executors.newSingleThreadExecutor().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Recipe recipe = ModelClient.instance().recipes.getRecipe(recipeId);
-                        ModelClient.instance().recipes.RemoveRecipe(recipe, (unused) -> {
-                        });
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
+                    for (Recipe recipe : recipes) {
+                        if (recipe.getId().equals(recipeId)) {
+                            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ModelClient.instance().recipes.RemoveRecipe(recipe, (unused) -> {
+                                    });
+                                }
+                            });
+                        }
                     }
-                });
+                }));
             }
         });
 
@@ -126,7 +134,7 @@ public class RecipesListFragment extends Fragment {
         }
     }
 
-    private void listenToBackButtonClick(){
+    private void listenToBackButtonClick() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
