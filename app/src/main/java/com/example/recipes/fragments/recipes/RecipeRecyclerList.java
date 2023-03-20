@@ -23,6 +23,7 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
     List<Recipe> recipes;
     Boolean hasAccess;
     ImageView recipeImage;
+    Recipe clickedRecipe;
 
     public RecipeViewHolder(@NonNull View itemView, RecipeRecyclerAdapter.OnItemClickListener listener, RecipeRecyclerAdapter.OnDeleteButtonClickListener listenerDelete, RecipeRecyclerAdapter.OnEditButtonClickListener listenerEdit, List<Recipe> recipes, Boolean hasAccess) {
         super(itemView);
@@ -62,11 +63,11 @@ class RecipeViewHolder extends RecyclerView.ViewHolder {
         deleteRecipeBtn.setVisibility(recipeActionsStatus);
         editRecipeBtn.setVisibility(recipeActionsStatus);
         ImageHelper.insertImageByUrl(recipe, recipeImage);
+        this.clickedRecipe= recipe;
     }
 
     private String getRecipeByPosition() {
-        int pos = getAdapterPosition();
-        return recipes.get(pos).id;
+        return this.clickedRecipe.id;
     }
 }
 
@@ -123,7 +124,7 @@ class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe recipe = recipes.get(position);
+        Recipe recipe = this.recipes.get(position);
         holder.bind(recipe, position);
     }
 
