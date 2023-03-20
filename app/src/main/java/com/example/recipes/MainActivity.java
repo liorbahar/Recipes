@@ -6,6 +6,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.appcompat.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
+
+        this.changeActionBarBackgroundColor();
 
         if (ModelClient.instance().users.isUserLogIn()) {
             navController.navigate(R.id.action_loginFragment_to_recipesListPageFragment);
@@ -71,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void showSupportActionBar() {
         getSupportActionBar().show();
+    }
+
+    public void changeActionBarBackgroundColor() {
+        ActionBar actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#085063"));
+        actionBar.setBackgroundDrawable(colorDrawable);
     }
 
 }

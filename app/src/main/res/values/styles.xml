@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">#27363A</item>
+        <item name="hintTextColor">@color/default_box_text_color</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="boxStrokeColor">@color/default_box_text_color</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
+    <style name="SearchViewLayout" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorHint">@color/black</item>
+        <item name="android:editTextColor">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:backgroundTint">@color/black</item>
+    </style>
+</resources>

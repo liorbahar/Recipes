@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
 import java.util.UUID;
 
 import android.graphics.Bitmap;
@@ -72,8 +73,13 @@ public class BasePutRecipeFragment extends Fragment {
 
         try {
             recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
-            Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
-            showRecipeDetails(data, binding);
+            ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
+                for (Recipe recipe : recipes) {
+                    if (recipe.getId().equals(recipeId)) {
+                        this.showRecipeDetails(recipe, binding);
+                    }
+                }
+            });
         } catch (Exception e) {
         }
 
@@ -149,7 +155,7 @@ public class BasePutRecipeFragment extends Fragment {
             public void handleOnBackPressed() {
                 if (onEditMode()) {
                     Navigation.findNavController(view).popBackStack();
-                }else{
+                } else {
                     new ExistApplicationDialog(getContext(), getActivity()).show();
                 }
             }

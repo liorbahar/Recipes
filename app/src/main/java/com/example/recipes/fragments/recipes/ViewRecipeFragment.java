@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 public class ViewRecipeFragment extends Fragment {
     FragmentViewRecipeBinding binding;
 
@@ -35,8 +37,13 @@ public class ViewRecipeFragment extends Fragment {
         this.listenToBackButtonClick(view);
 
         String recipeId = getArguments().getString("recipeId");
-        Recipe data = ModelClient.instance().recipes.getRecipe(recipeId);
-        this.showRecipeDetails(data, binding);
+        ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
+            for (Recipe recipe : recipes) {
+                if (recipe.getId().equals(recipeId)) {
+                    this.showRecipeDetails(recipe, binding);
+                }
+            }
+        });
         return view;
     }
 

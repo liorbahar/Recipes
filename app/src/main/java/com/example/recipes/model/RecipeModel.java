@@ -94,7 +94,9 @@ public class RecipeModel implements IRecipeModel {
         });
     }
 
-
-
+    public void RemoveRecipe(Recipe recipe, ModelClient.Listener listener) {
+        this.recipesFirebaseHandler.deleteRecipe(recipe.id, listener);
+        this.localDb.recipesDao().delete(recipe.id);
+    }
 
 }

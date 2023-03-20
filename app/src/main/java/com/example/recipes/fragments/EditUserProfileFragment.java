@@ -65,7 +65,7 @@ public class EditUserProfileFragment extends Fragment {
 
         ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (User user) -> {
             if (user != null) {
-                UserProfileHelper.ShowDetails(view, user, binding.userProfileAvatarImv, true);
+                UserProfileHelper.ShowDetails(view, user, binding.userProfileAvatarImv, false);
                 avatarUrl = user.getAvatarUrl();
             }
         });

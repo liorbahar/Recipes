@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,10 @@ import android.widget.SearchView;
 import com.example.recipes.MainActivity;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
 import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.dto.Recipe;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.model.ModelClient;
+import java.util.concurrent.Executors;
 import com.example.recipes.dto.Recipe;
 
 import java.util.ArrayList;
@@ -72,6 +78,25 @@ public class RecipesListFragment extends Fragment {
             }
         });
 
+        adapter.setOnDeleteButtonClickListener(new RecipeRecyclerAdapter.OnDeleteButtonClickListener() {
+            @Override
+            public void onItemClick(String recipeId) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
+                    for (Recipe recipe : recipes) {
+                        if (recipe.getId().equals(recipeId)) {
+                            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ModelClient.instance().recipes.RemoveRecipe(recipe, (unused) -> {
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }));
+            }
+        });
 
         binding.fragmentRecipesListSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -111,7 +136,7 @@ public class RecipesListFragment extends Fragment {
         }
     }
 
-    private void listenToBackButtonClick(){
+    private void listenToBackButtonClick() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

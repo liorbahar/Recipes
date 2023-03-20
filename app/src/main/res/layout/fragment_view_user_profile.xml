@@ -44,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/button_color_primary"
                     android:text="EDIT" />
                 <Button
                     android:id="@+id/view_user_profile_signout_btn"
@@ -51,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/button_color_primary"
                     android:text="Sign out" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
