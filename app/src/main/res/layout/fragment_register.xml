@@ -30,9 +30,9 @@
         android:layout_marginTop="15dp"
         android:hint="Name"
         android:padding="10dp"
-        android:textColor="#eeeeee"
-        android:textColorHighlight="#eeeeee"
-        android:textColorHint="#eeeeee" />
+        android:textColor="@color/text_color_primary"
+        android:textColorHighlight="@color/text_color_primary"
+        android:textColorHint="@color/text_color_primary" />
 
     <EditText
         android:id="@+id/email"
@@ -41,9 +41,9 @@
         android:layout_marginTop="15dp"
         android:hint="Email"
         android:padding="10dp"
-        android:textColor="#eeeeee"
-        android:textColorHighlight="#eeeeee"
-        android:textColorHint="#eeeeee" />
+        android:textColor="@color/text_color_primary"
+        android:textColorHighlight="@color/text_color_primary"
+        android:textColorHint="@color/text_color_primary" />
 
     <EditText
         android:id="@+id/password"
@@ -53,9 +53,9 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="10dp"
-        android:textColor="#eeeeee"
-        android:textColorHighlight="#eeeeee"
-        android:textColorHint="#eeeeee" />
+        android:textColor="@color/text_color_primary"
+        android:textColorHighlight="@color/text_color_primary"
+        android:textColorHint="@color/text_color_primary" />
 
     <TextView
         android:id="@+id/login_user"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Already a user? LogIn"
-        android:textColor="#eeeeee" />
+        android:textColor="@color/text_color_primary" />
 
     <Button
         android:id="@+id/registerBtn"
