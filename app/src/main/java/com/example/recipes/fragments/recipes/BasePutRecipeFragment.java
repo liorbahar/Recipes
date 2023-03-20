@@ -1,12 +1,14 @@
-package com.example.recipes.fragments;
+package com.example.recipes.fragments.recipes;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentBasePutRecipeBinding;
+import com.example.recipes.helper.DialogsHelper;
 import com.example.recipes.helper.ImageHelper;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.models.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -14,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +82,11 @@ public class BasePutRecipeFragment extends Fragment {
             this.onSaveStudentClick(binding, view1);
         });
 
-        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.recipesListPageFragment, false));
+        binding.cancelBtn.setOnClickListener(view1 -> {
+            Navigation.findNavController(view1).popBackStack();
+            Navigation.findNavController(view1).navigate(R.id.recipesListPageFragment);
+
+        });
         setHasOptionsMenu(true);
 
         binding.cameraButton.setOnClickListener(view1 -> {
@@ -89,15 +96,20 @@ public class BasePutRecipeFragment extends Fragment {
         binding.galleryButton.setOnClickListener(view1 -> {
             galleryLauncher.launch("image/*");
         });
+
+        this.listenToBackButtonClick(view);
+
         return view;
     }
 
-    private Void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
+    private boolean onEditMode() {
+        return !recipeId.isEmpty();
+    }
+
+    private void showRecipeDetails(Recipe recipe, FragmentBasePutRecipeBinding binding) {
         binding.basePutRecipeNameEt.setText(recipe.getName());
         binding.basePutRecipeBodyEt.setText(recipe.getBody());
         ImageHelper.insertImageByUrl(recipe, binding.addrecipeAvatarImv);
-
-        return null;
     }
 
     private void onSaveStudentClick(FragmentBasePutRecipeBinding binding, View view) {
@@ -123,6 +135,7 @@ public class BasePutRecipeFragment extends Fragment {
     private void addRecipeAndNavigate(Recipe recipe, View view) {
         ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
             Navigation.findNavController(view).popBackStack();
+            Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });
     }
 
@@ -130,4 +143,19 @@ public class BasePutRecipeFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
     }
+
+    private void listenToBackButtonClick(View view) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (onEditMode()) {
+                    Navigation.findNavController(view).popBackStack();
+                }else{
+                    DialogsHelper.getDialog(getContext(), getActivity()).show();
+                }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+    }
+
 }

@@ -1,14 +1,15 @@
 package com.example.recipes;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
+import androidx.appcompat.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,16 +27,20 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
-        NavigationUI.setupActionBarWithNavController(this, navController);
 
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration
+                .Builder(R.id.recipesListPageFragment,R.id.recipesUserListPageFragment ,R.id.addRecipeFragment, R.id.specialRecipe, R.id.viewUserProfileFragment)
+                .build();
+
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(navView, navController);
 
-        if (!ModelClient.instance().users.isUserLogIn()) {
-            navController.navigate(R.id.action_recipesListPageFragment_to_loginFragment);
-        }
-
         this.changeActionBarBackgroundColor();
+
+        if (ModelClient.instance().users.isUserLogIn()) {
+            navController.navigate(R.id.action_loginFragment_to_recipesListPageFragment);
+        }
     }
 
     int fragmentMenuId = 0;
@@ -52,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
         } else {
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void showSupportActionBar() {
         getSupportActionBar().show();
     }
+
     public void changeActionBarBackgroundColor() {
         ActionBar actionBar = getSupportActionBar();
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#68868E"));

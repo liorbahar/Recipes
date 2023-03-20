@@ -1,12 +1,10 @@
-package com.example.recipes.fragments;
+package com.example.recipes.fragments.recipes;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -14,21 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipes.R;
-import com.example.recipes.databinding.FragmentRecipesListPageBinding;
 import com.example.recipes.databinding.FragmentUserRecipesListPageBinding;
-import com.example.recipes.fragments.views.RecipesListPageFragmentViewModel;
-import com.example.recipes.fragments.views.UserRecipesListPageFragmentViewModel;
+import com.example.recipes.fragments.recipes.views.UserRecipesListPageFragmentViewModel;
 import com.example.recipes.helper.models.ModelClient;
 import com.example.recipes.helper.models.RecipeModel;
 import com.example.recipes.models.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserRecipesListPageFragment extends Fragment {
     private RecipesListFragment recipesListFragment;
-    private FragmentTransaction tran;
     private UserRecipesListPageFragmentViewModel viewModel;
     private FragmentUserRecipesListPageBinding binding;
     private String userUuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -65,16 +58,12 @@ public class UserRecipesListPageFragment extends Fragment {
     }
 
     private void showRecipesList() {
-        FragmentManager manager = getFragmentManager();
-
-        if (this.recipesListFragment != null && this.recipesListFragment.isAdded()) {
-            this.tran.remove(this.recipesListFragment);
-        }
-
-        this.tran = manager.beginTransaction();
         this.recipesListFragment = new RecipesListFragment();
-        this.tran.add(R.id.fragment_user_recipes_list_page_container, this.recipesListFragment);
-        this.tran.commit();
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_user_recipes_list_page_container, this.recipesListFragment)
+                .commit();
 
         if (this.viewModel.getRecipes().getValue() != null) {
             this.recipesListFragment.setRecipes(this.viewModel.getRecipes().getValue());
@@ -83,4 +72,6 @@ public class UserRecipesListPageFragment extends Fragment {
         bundle.putBoolean("hasAccess", true);
         this.recipesListFragment.setArguments(bundle);
     }
+
+
 }

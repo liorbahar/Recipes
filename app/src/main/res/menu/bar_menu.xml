@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/recipesListPageFragment"
-        android:icon="?android:attr/actionModeWebSearchDrawable"
+        android:icon="@drawable/open_book"
         android:title="All Recipes" />
     <item
         android:id="@+id/recipesUserListPageFragment"
@@ -14,6 +14,10 @@
         android:title="Add" />
     <item
         android:id="@+id/specialRecipe"
-        android:icon="@android:drawable/star_big_on"
+        android:icon="@drawable/surprise"
         android:title="Special Recipe" />
+    <item
+        android:id="@+id/viewUserProfileFragment"
+        android:icon="@drawable/user_profile_avatar"
+        android:title="Profile" />
 </menu>

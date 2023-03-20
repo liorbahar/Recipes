@@ -1,7 +1,8 @@
-package com.example.recipes.fragments;
+package com.example.recipes.fragments.recipes;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,12 +15,12 @@ import android.widget.SearchView;
 
 import com.example.recipes.MainActivity;
 import com.example.recipes.databinding.FragmentRecipesListBinding;
-import com.example.recipes.helper.models.ModelClient;
+import com.example.recipes.helper.DialogsHelper;
 import com.example.recipes.models.Recipe;
+import java.util.concurrent.Executors;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 public class RecipesListFragment extends Fragment {
     private List<Recipe> recipes = new ArrayList<>();
@@ -50,7 +51,6 @@ public class RecipesListFragment extends Fragment {
         this.adapter = new RecipeRecyclerAdapter(getLayoutInflater(), this.recipes, this.hasAccess);
         binding.recipesListFragmentLs.setAdapter(this.adapter);
 
-
         adapter.setOnItemClickListener(new RecipeRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String recipeId) {
@@ -67,6 +67,7 @@ public class RecipesListFragment extends Fragment {
         adapter.setOnEditButtonClickListener(new RecipeRecyclerAdapter.OnEditButtonClickListener() {
             @Override
             public void onItemClick(String recipeId) {
+                //get userId from context when have login
                 UserRecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = UserRecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(recipeId);
                 Navigation.findNavController(view).navigate(action);
             }
@@ -86,7 +87,6 @@ public class RecipesListFragment extends Fragment {
             }
         });
 
-
         binding.fragmentRecipesListSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String recipeNameSearch) {
@@ -102,6 +102,8 @@ public class RecipesListFragment extends Fragment {
                 return true;
             }
         });
+
+        this.listenToBackButtonClick();
 
         return view;
     }
@@ -121,6 +123,16 @@ public class RecipesListFragment extends Fragment {
         if (this.adapter != null) {
             this.adapter.setRecipes(recipes);
         }
+    }
+
+    private void listenToBackButtonClick(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                DialogsHelper.getDialog(getContext(), getActivity()).show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
 }
