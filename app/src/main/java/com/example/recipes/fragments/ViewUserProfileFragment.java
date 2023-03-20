@@ -8,18 +8,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentViewUserProfileBinding;
-import com.example.recipes.helper.DialogsHelper;
-import com.example.recipes.helper.UserProfileHelper;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.models.User;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.utils.UserProfileHelper;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.dto.User;
 
 public class ViewUserProfileFragment extends Fragment {
     FragmentViewUserProfileBinding binding;
@@ -59,7 +57,7 @@ public class ViewUserProfileFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                DialogsHelper.getDialog(getContext(), getActivity()).show();
+                new ExistApplicationDialog(getContext(), getActivity()).show();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

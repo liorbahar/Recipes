@@ -3,9 +3,10 @@ package com.example.recipes.fragments.authentication;
 import com.example.recipes.MainActivity;
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentRegisterBinding;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.UserModel;
-import com.example.recipes.models.User;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.UserModel;
+import com.example.recipes.dto.User;
+import com.example.recipes.model.interfaces.AuthenticationListener;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -19,7 +20,6 @@ import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +73,7 @@ public class RegisterFragment extends Fragment {
         pd.show();
 
         User user = new User("", name, email, "");
-        ModelClient.instance().users.registerUser(user, password, new UserModel.RegisterListener() {
+        ModelClient.instance().users.registerUser(user, password, new AuthenticationListener() {
             @Override
             public void onComplete() {
                 pd.dismiss();

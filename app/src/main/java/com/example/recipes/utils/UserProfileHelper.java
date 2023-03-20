@@ -1,11 +1,11 @@
-package com.example.recipes.helper;
+package com.example.recipes.utils;
 
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.recipes.R;
-import com.example.recipes.models.User;
+import com.example.recipes.dto.User;
 
 public class UserProfileHelper {
     public static void ShowDetails(View view, User user, ImageView imageView, Boolean isOnlyView) {

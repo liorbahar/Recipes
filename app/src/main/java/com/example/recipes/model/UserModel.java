@@ -1,25 +1,23 @@
-package com.example.recipes.helper.models;
+package com.example.recipes.model;
 
 import com.example.recipes.database.UserFirebaseHandler;
-import com.example.recipes.localdatabase.AppLocalDbRepository;
-import com.example.recipes.models.User;
+import com.example.recipes.database.interfaces.IUserDBHandler;
+import com.example.recipes.model.interfaces.AuthenticationListener;
+import com.example.recipes.model.interfaces.IUserModel;
+import com.example.recipes.cache.AppLocalDbRepository;
+import com.example.recipes.dto.User;
 import androidx.lifecycle.LiveData;
 import java.util.concurrent.Executor;
 
-public class UserModel {
+public class UserModel implements IUserModel {
     private final Executor executor;
     private final AppLocalDbRepository localDb;
-    private UserFirebaseHandler userFirebase = new UserFirebaseHandler();
+    private IUserDBHandler userFirebase = new UserFirebaseHandler();
     private LiveData<User> userData;
 
     public UserModel(Executor executor, AppLocalDbRepository localDb) {
         this.executor = executor;
         this.localDb = localDb;
-    }
-
-
-    public interface GetCurrentUserListener {
-        void onComplete(User user);
     }
 
     public LiveData<User> getCurrentUser() {
@@ -52,14 +50,7 @@ public class UserModel {
         return this.userFirebase.isUserLogIn();
     }
 
-    /////////////////////// Auth //////////////////////////////////////////////////////
-    public interface RegisterListener {
-        void onComplete();
-
-        void onFailed(String err);
-    }
-
-    public void registerUser(final User user, String password, final RegisterListener listener) {
+    public void registerUser(final User user, String password, final AuthenticationListener listener) {
         this.userFirebase.registerUser(user, password, listener);
     }
 
@@ -67,10 +58,7 @@ public class UserModel {
         this.userFirebase.signOutUser();
     }
 
-    public interface LoginListener extends RegisterListener {
-    }
-
-    public void loginUser(final String email, String password, final LoginListener listener) {
+    public void loginUser(final String email, String password, final AuthenticationListener listener) {
         this.userFirebase.loginUser(email, password, listener);
     }
 }

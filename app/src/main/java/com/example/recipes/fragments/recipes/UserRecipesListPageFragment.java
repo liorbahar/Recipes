@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentUserRecipesListPageBinding;
 import com.example.recipes.fragments.recipes.views.UserRecipesListPageFragmentViewModel;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.RecipeModel;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.RecipeModel;
+import com.example.recipes.dto.Recipe;
+import com.example.recipes.model.interfaces.LoadingState;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
@@ -38,10 +39,10 @@ public class UserRecipesListPageFragment extends Fragment {
             ModelClient.instance().recipes.refreshUserRecipes(this.userUuid);
         });
 
-        ModelClient.instance().recipes.EventUserRecipesListLoadingState.observe(getViewLifecycleOwner(),status->{
-            binding.swipeUserRecipesRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+        ModelClient.instance().recipes.getEventUserRecipesListLoadingState().observe(getViewLifecycleOwner(),status->{
+            binding.swipeUserRecipesRefresh.setRefreshing(status == LoadingState.LOADING);
 
-            if (status == RecipeModel.LoadingState.NOT_LOADING){
+            if (status == LoadingState.NOT_LOADING){
                 this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
                     this.recipesListFragment.setRecipes(recipes);
                 });

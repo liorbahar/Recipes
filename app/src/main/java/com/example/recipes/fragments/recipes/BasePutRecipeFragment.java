@@ -2,10 +2,10 @@ package com.example.recipes.fragments.recipes;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentBasePutRecipeBinding;
-import com.example.recipes.helper.DialogsHelper;
-import com.example.recipes.helper.ImageHelper;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.utils.ImageHelper;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.dto.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.activity.OnBackPressedCallback;
@@ -16,7 +16,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -157,7 +156,7 @@ public class BasePutRecipeFragment extends Fragment {
                 if (onEditMode()) {
                     Navigation.findNavController(view).popBackStack();
                 } else {
-                    DialogsHelper.getDialog(getContext(), getActivity()).show();
+                    new ExistApplicationDialog(getContext(), getActivity()).show();
                 }
             }
         };

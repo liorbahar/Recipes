@@ -1,9 +1,9 @@
-package com.example.recipes.models;
+package com.example.recipes.dto;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.example.recipes.models.interfaces.IImageModel;
+import com.example.recipes.dto.interfaces.IImageModel;
 
 import java.util.HashMap;
 import java.util.Map;

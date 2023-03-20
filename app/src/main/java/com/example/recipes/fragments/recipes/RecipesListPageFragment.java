@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentRecipesListPageBinding;
 import com.example.recipes.fragments.recipes.views.RecipesListPageFragmentViewModel;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.RecipeModel;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.RecipeModel;
+import com.example.recipes.dto.Recipe;
+import com.example.recipes.model.interfaces.LoadingState;
 
 import java.util.List;
 
@@ -37,10 +38,10 @@ public class RecipesListPageFragment extends Fragment {
             ModelClient.instance().recipes.refreshAllRecipes();
         });
 
-        ModelClient.instance().recipes.EventRecipesListLoadingState.observe(getViewLifecycleOwner(),status->{
-            binding.swipeRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+        ModelClient.instance().recipes.getEventRecipesListLoadingState().observe(getViewLifecycleOwner(),status->{
+            binding.swipeRefresh.setRefreshing(status == LoadingState.LOADING);
 
-            if (status == RecipeModel.LoadingState.NOT_LOADING){
+            if (status == LoadingState.NOT_LOADING){
                 this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
                     this.recipesListFragment.setRecipes(recipes);
                 });

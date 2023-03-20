@@ -1,10 +1,9 @@
 package com.example.recipes.fragments.recipes;
 
-import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentViewRecipeBinding;
-import com.example.recipes.helper.ImageHelper;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.utils.ImageHelper;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.dto.Recipe;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

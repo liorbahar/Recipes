@@ -11,14 +11,16 @@ import androidx.lifecycle.LiveData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.recipes.databinding.FragmentSpecialRandomRecipeBinding;
 import com.example.recipes.databinding.FragmentViewRecipeBinding;
-import com.example.recipes.helper.DialogsHelper;
-import com.example.recipes.helper.ImageHelper;
-import com.example.recipes.helper.models.ModelClient;
-import com.example.recipes.helper.models.RecipeModel;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.model.interfaces.LoadingState;
+import com.example.recipes.utils.ExistApplicationDialog;
+import com.example.recipes.utils.ImageHelper;
+import com.example.recipes.model.ModelClient;
+import com.example.recipes.model.RecipeModel;
+import com.example.recipes.dto.Recipe;
 
 public class SpecialRandomRecipeFragment extends Fragment {
     FragmentSpecialRandomRecipeBinding binding;
@@ -34,14 +36,14 @@ public class SpecialRandomRecipeFragment extends Fragment {
         fragmentViewRecipeBinding = FragmentViewRecipeBinding.bind(view);
 
         binding.swipeSpecialRandomRefresh.setOnRefreshListener(()->{
-            recipeLiveData = ModelClient.instance().recipes.getRandomRecipe();
+            recipeLiveData = this.fetchRandomRecipe();
             recipeLiveData.observe(getViewLifecycleOwner(), this::showRecipeDetails);
         });
 
-        ModelClient.instance().recipes.EventSpecialRandomRecipeLoadingState.observe(getViewLifecycleOwner(),status->{
-            binding.swipeSpecialRandomRefresh.setRefreshing(status == RecipeModel.LoadingState.LOADING);
+        ModelClient.instance().randomRecipe.getEventSpecialRandomRecipeLoadingState().observe(getViewLifecycleOwner(),status->{
+            binding.swipeSpecialRandomRefresh.setRefreshing(status == LoadingState.LOADING);
 
-            if (status == RecipeModel.LoadingState.NOT_LOADING){
+            if (status == LoadingState.NOT_LOADING){
                 recipeLiveData.observe(getViewLifecycleOwner(), this::showRecipeDetails);
             }
         });
@@ -62,14 +64,21 @@ public class SpecialRandomRecipeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        recipeLiveData = ModelClient.instance().recipes.getRandomRecipe();
+        recipeLiveData = this.fetchRandomRecipe();
+    }
+
+    private LiveData<Recipe> fetchRandomRecipe(){
+        ModelClient.Listener<Void> onFailedListener = data -> {
+            Toast.makeText(getContext(),"Failed getting random recipe, please try again later",Toast.LENGTH_LONG).show();
+        };
+        return ModelClient.instance().randomRecipe.getRandomRecipe(onFailedListener);
     }
 
     private void listenToBackButtonClick() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                DialogsHelper.getDialog(getContext(), getActivity()).show();
+                new ExistApplicationDialog(getContext(), getActivity()).show();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
