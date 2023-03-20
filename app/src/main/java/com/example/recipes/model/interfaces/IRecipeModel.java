@@ -15,9 +15,9 @@ public interface IRecipeModel {
 
     void addRecipe(Recipe recipe, ModelClient.Listener listener);
 
-    MutableLiveData<ModelClient.LoadingState> getEventRecipesListLoadingState();
+    MutableLiveData<LoadingState> getEventRecipesListLoadingState();
 
-    MutableLiveData<ModelClient.LoadingState> getEventUserRecipesListLoadingState();
+    MutableLiveData<LoadingState> getEventUserRecipesListLoadingState();
 
     void refreshAllRecipes();
 

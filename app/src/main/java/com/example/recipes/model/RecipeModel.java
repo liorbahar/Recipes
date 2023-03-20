@@ -8,6 +8,8 @@ import com.example.recipes.database.interfaces.IRecipesDBHandler;
 import com.example.recipes.model.interfaces.IRecipeModel;
 import com.example.recipes.cache.AppLocalDbRepository;
 import com.example.recipes.dto.Recipe;
+import com.example.recipes.model.interfaces.LoadingState;
+
 import java.util.List;
 
 public class RecipeModel implements IRecipeModel {
@@ -16,8 +18,8 @@ public class RecipeModel implements IRecipeModel {
     private IRecipesDBHandler recipesFirebaseHandler = new RecipesFirebaseHandler();
     private LiveData<List<Recipe>> recipesList;
     private LiveData<List<Recipe>> userRecipesList;
-    final private MutableLiveData<ModelClient.LoadingState> EventRecipesListLoadingState = new MutableLiveData<ModelClient.LoadingState>(ModelClient.LoadingState.NOT_LOADING);
-    final private MutableLiveData<ModelClient.LoadingState> EventUserRecipesListLoadingState = new MutableLiveData<ModelClient.LoadingState>(ModelClient.LoadingState.NOT_LOADING);
+    final private MutableLiveData<LoadingState> EventRecipesListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+    final private MutableLiveData<LoadingState> EventUserRecipesListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
 
     public RecipeModel(Executor executor, AppLocalDbRepository localDb) {
@@ -25,11 +27,11 @@ public class RecipeModel implements IRecipeModel {
         this.localDb = localDb;
     }
 
-    public MutableLiveData<ModelClient.LoadingState> getEventRecipesListLoadingState(){
+    public MutableLiveData<LoadingState> getEventRecipesListLoadingState(){
         return this.EventRecipesListLoadingState;
     }
 
-    public MutableLiveData<ModelClient.LoadingState> getEventUserRecipesListLoadingState(){
+    public MutableLiveData<LoadingState> getEventUserRecipesListLoadingState(){
         return this.EventUserRecipesListLoadingState;
     }
 
@@ -47,13 +49,13 @@ public class RecipeModel implements IRecipeModel {
     }
 
     public void refreshUserRecipes(String userId) {
-        EventUserRecipesListLoadingState.setValue(ModelClient.LoadingState.LOADING);
+        EventUserRecipesListLoadingState.setValue(LoadingState.LOADING);
         this.recipesFirebaseHandler.getRecipesOfUser(userId, (List<Recipe> recipes) -> {
             executor.execute(() -> {
                 for (Recipe recipe : recipes) {
                     localDb.recipesDao().insertAll(recipe);
                 }
-                EventUserRecipesListLoadingState.postValue(ModelClient.LoadingState.NOT_LOADING);
+                EventUserRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }
@@ -81,13 +83,13 @@ public class RecipeModel implements IRecipeModel {
     }
 
     public void refreshAllRecipes() {
-        EventRecipesListLoadingState.setValue(ModelClient.LoadingState.LOADING);
+        EventRecipesListLoadingState.setValue(LoadingState.LOADING);
         this.recipesFirebaseHandler.getAllRecipes((List<Recipe> recipes) -> {
             executor.execute(() -> {
                 for (Recipe recipe : recipes) {
                     localDb.recipesDao().insertAll(recipe);
                 }
-                EventRecipesListLoadingState.postValue(ModelClient.LoadingState.NOT_LOADING);
+                EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }

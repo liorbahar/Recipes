@@ -38,11 +38,6 @@ public class ModelClient {
         void onComplete(T data);
     }
 
-    public enum LoadingState {
-        LOADING,
-        NOT_LOADING
-    }
-
     private ModelClient() {
         this.users = new UserModel(executor, localDb);
         this.recipes = new RecipeModel(executor, localDb);

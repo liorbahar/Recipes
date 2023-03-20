@@ -17,6 +17,7 @@ import com.example.recipes.fragments.recipes.views.UserRecipesListPageFragmentVi
 import com.example.recipes.model.ModelClient;
 import com.example.recipes.model.RecipeModel;
 import com.example.recipes.dto.Recipe;
+import com.example.recipes.model.interfaces.LoadingState;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
@@ -39,9 +40,9 @@ public class UserRecipesListPageFragment extends Fragment {
         });
 
         ModelClient.instance().recipes.getEventUserRecipesListLoadingState().observe(getViewLifecycleOwner(),status->{
-            binding.swipeUserRecipesRefresh.setRefreshing(status == ModelClient.LoadingState.LOADING);
+            binding.swipeUserRecipesRefresh.setRefreshing(status == LoadingState.LOADING);
 
-            if (status == ModelClient.LoadingState.NOT_LOADING){
+            if (status == LoadingState.NOT_LOADING){
                 this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
                     this.recipesListFragment.setRecipes(recipes);
                 });

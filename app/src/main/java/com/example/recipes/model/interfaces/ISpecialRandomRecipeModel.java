@@ -10,7 +10,7 @@ import com.example.recipes.dto.Recipe;
 public interface ISpecialRandomRecipeModel {
     LiveData<Recipe> getRandomRecipe(ModelClient.Listener<Void> onFailedListener);
 
-    MutableLiveData<ModelClient.LoadingState> getEventSpecialRandomRecipeLoadingState();
+    MutableLiveData<LoadingState> getEventSpecialRandomRecipeLoadingState();
 
 
 

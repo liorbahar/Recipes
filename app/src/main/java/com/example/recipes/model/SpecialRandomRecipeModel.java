@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.recipes.model.interfaces.ISpecialRandomRecipeModel;
 import com.example.recipes.dto.Recipe;
 import com.example.recipes.dto.api.RandomRecipeApiResult;
+import com.example.recipes.model.interfaces.LoadingState;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -21,7 +22,7 @@ public class SpecialRandomRecipeModel implements ISpecialRandomRecipeModel {
     private Retrofit retrofit;
     private RecipeApi recipeApi;
     private HashMap<String, String> headers = new HashMap<>();;
-    final private MutableLiveData<ModelClient.LoadingState> EventSpecialRandomRecipeLoadingState = new MutableLiveData<ModelClient.LoadingState>(ModelClient.LoadingState.NOT_LOADING);
+    final private MutableLiveData<LoadingState> EventSpecialRandomRecipeLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
     public SpecialRandomRecipeModel(){
         Gson gson = new GsonBuilder()
@@ -36,7 +37,7 @@ public class SpecialRandomRecipeModel implements ISpecialRandomRecipeModel {
     }
 
     public LiveData<Recipe> getRandomRecipe(ModelClient.Listener<Void> onFailedListener) {
-        EventSpecialRandomRecipeLoadingState.setValue(ModelClient.LoadingState.LOADING);
+        EventSpecialRandomRecipeLoadingState.setValue(LoadingState.LOADING);
         MutableLiveData<Recipe> data = new MutableLiveData<>();
         Call<RandomRecipeApiResult> call = this.recipeApi.getRandomRecipe(headers);
         call.enqueue(new Callback<RandomRecipeApiResult>() {
@@ -46,12 +47,12 @@ public class SpecialRandomRecipeModel implements ISpecialRandomRecipeModel {
                     RandomRecipeApiResult res = response.body();
                     data.setValue(res.getRecipe().toRecipe());
                 }
-                EventSpecialRandomRecipeLoadingState.postValue(ModelClient.LoadingState.NOT_LOADING);
+                EventSpecialRandomRecipeLoadingState.postValue(LoadingState.NOT_LOADING);
             }
 
             @Override
             public void onFailure(Call<RandomRecipeApiResult> call, Throwable t) {
-                EventSpecialRandomRecipeLoadingState.postValue(ModelClient.LoadingState.NOT_LOADING);
+                EventSpecialRandomRecipeLoadingState.postValue(LoadingState.NOT_LOADING);
                 onFailedListener.onComplete(null);
             }
         });
@@ -59,7 +60,7 @@ public class SpecialRandomRecipeModel implements ISpecialRandomRecipeModel {
     }
 
     @Override
-    public MutableLiveData<ModelClient.LoadingState> getEventSpecialRandomRecipeLoadingState() {
+    public MutableLiveData<LoadingState> getEventSpecialRandomRecipeLoadingState() {
         return this.EventSpecialRandomRecipeLoadingState;
     }
 }

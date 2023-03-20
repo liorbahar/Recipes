@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.recipes.databinding.FragmentSpecialRandomRecipeBinding;
 import com.example.recipes.databinding.FragmentViewRecipeBinding;
+import com.example.recipes.model.interfaces.LoadingState;
 import com.example.recipes.utils.ExistApplicationDialog;
 import com.example.recipes.utils.ImageHelper;
 import com.example.recipes.model.ModelClient;
@@ -40,9 +41,9 @@ public class SpecialRandomRecipeFragment extends Fragment {
         });
 
         ModelClient.instance().randomRecipe.getEventSpecialRandomRecipeLoadingState().observe(getViewLifecycleOwner(),status->{
-            binding.swipeSpecialRandomRefresh.setRefreshing(status == ModelClient.LoadingState.LOADING);
+            binding.swipeSpecialRandomRefresh.setRefreshing(status == LoadingState.LOADING);
 
-            if (status == ModelClient.LoadingState.NOT_LOADING){
+            if (status == LoadingState.NOT_LOADING){
                 recipeLiveData.observe(getViewLifecycleOwner(), this::showRecipeDetails);
             }
         });
