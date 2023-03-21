@@ -39,6 +39,8 @@ public class BasePutRecipeFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
     String recipeId = "";
+    Recipe recipe;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,9 +76,10 @@ public class BasePutRecipeFragment extends Fragment {
         try {
             recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
             ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
-                for (Recipe recipe : recipes) {
-                    if (recipe.getId().equals(recipeId)) {
-                        this.showRecipeDetails(recipe, binding);
+                for (Recipe recipeRes : recipes) {
+                    if (recipeRes.getId().equals(recipeId)) {
+                        this.recipe =recipeRes;
+                        this.showRecipeDetails(recipeRes, binding);
                     }
                 }
             });
@@ -122,7 +125,8 @@ public class BasePutRecipeFragment extends Fragment {
         String body = binding.basePutRecipeBodyEt.getText().toString();
         String id = !recipeId.isEmpty() ? recipeId : UUID.randomUUID().toString();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Recipe recipe = new Recipe(id, name, body, userId, "");
+        String avatarUrl = this.recipe != null ?  this.recipe.getAvatarUrl() : "";
+        Recipe recipe = new Recipe(id, name, body, userId, avatarUrl);
 
         if (isAvatarSelected) {
             Bitmap bitmap = ImageHelper.getImageViewBitmap(binding.addrecipeAvatarImv);
