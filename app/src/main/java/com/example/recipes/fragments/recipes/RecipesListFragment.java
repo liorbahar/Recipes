@@ -70,7 +70,6 @@ public class RecipesListFragment extends Fragment {
         adapter.setOnEditButtonClickListener(new RecipeRecyclerAdapter.OnEditButtonClickListener() {
             @Override
             public void onItemClick(String recipeId) {
-                //get userId from context when have login
                 UserRecipesListPageFragmentDirections.ActionRecipesListFragmentToEditRecipesFragment action = UserRecipesListPageFragmentDirections.actionRecipesListFragmentToEditRecipesFragment(recipeId);
                 Navigation.findNavController(view).navigate(action);
             }
