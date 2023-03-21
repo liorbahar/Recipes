@@ -77,6 +77,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onComplete() {
                 pd.dismiss();
+                ModelClient.instance().users.refreshCurrentUser();
                 Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_recipesListPageFragment);
 
             }

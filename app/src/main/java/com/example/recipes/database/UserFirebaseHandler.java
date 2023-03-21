@@ -60,29 +60,31 @@ public class UserFirebaseHandler implements IUserDBHandler {
     public void registerUser(User user, String password, AuthenticationListener listener) {
         this.firebaseAuth.createUserWithEmailAndPassword(user.email, password)
                 .addOnSuccessListener(authResult -> {
-                    db.collection(User.COLLECTION_NAME).document(firebaseAuth.getCurrentUser().getUid()).set(user.toJson()).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            listener.onComplete();
-                        }
+                    String userId = firebaseAuth.getCurrentUser().getUid();
+                    user.setId(userId);
+                    db.collection(User.COLLECTION_NAME).document(userId).set(user.toJson()).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                listener.onComplete();
+                            }
+                        });
+
+                    }).addOnFailureListener(e -> {
+                        listener.onFailed(e.getMessage());
                     });
+                }
 
-                }).addOnFailureListener(e -> {
-                    listener.onFailed(e.getMessage());
-                });
+        public void signOutUser () {
+            this.firebaseAuth.signOut();
+        }
+
+        public void loginUser (String email, String password, AuthenticationListener listener){
+            this.firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    listener.onComplete();
+                }
+
+            }).addOnFailureListener(e -> {
+                listener.onFailed(e.getMessage());
+            });
+        }
     }
-
-    public void signOutUser() {
-        this.firebaseAuth.signOut();
-    }
-
-    public void loginUser(String email, String password, AuthenticationListener listener) {
-        this.firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                listener.onComplete();
-            }
-
-        }).addOnFailureListener(e -> {
-            listener.onFailed(e.getMessage());
-        });
-    }
-}
