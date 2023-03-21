@@ -11,6 +11,7 @@ import com.example.recipes.model.interfaces.IRecipeModel;
 import com.example.recipes.cache.AppLocalDbRepository;
 import com.example.recipes.dto.Recipe;
 import com.example.recipes.model.interfaces.LoadingState;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -37,7 +38,9 @@ public class RecipeModel implements IRecipeModel {
         return this.EventUserRecipesListLoadingState;
     }
 
-    public LiveData<List<Recipe>> getUserRecipes(String userId) {
+    public LiveData<List<Recipe>> getUserRecipes() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         if (this.userRecipesList == null) {
             this.userRecipesList = this.localDb.recipesDao().getRecipesByUserId(userId);
             this.refreshUserRecipes(userId);
@@ -96,4 +99,12 @@ public class RecipeModel implements IRecipeModel {
         this.localDb.recipesDao().delete(recipe.id);
     }
 
+    public void deleteAllRecipesLocal() {
+        executor.execute(() -> {
+            this.localDb.recipesDao().deleteAll();
+            Recipe.setLocalLastUpdate(0L);
+            this.recipesList = null;
+            this.userRecipesList = null;
+        });
+    }
 }
