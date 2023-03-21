@@ -1,14 +1,17 @@
 package com.example.recipes.model;
 
 import java.util.concurrent.Executor;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.recipes.database.RecipesFirebaseHandler;
 import com.example.recipes.database.interfaces.IRecipesDBHandler;
 import com.example.recipes.model.interfaces.IRecipeModel;
 import com.example.recipes.cache.AppLocalDbRepository;
 import com.example.recipes.dto.Recipe;
 import com.example.recipes.model.interfaces.LoadingState;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -35,7 +38,9 @@ public class RecipeModel implements IRecipeModel {
         return this.EventUserRecipesListLoadingState;
     }
 
-    public LiveData<List<Recipe>> getUserRecipes(String userId) {
+    public LiveData<List<Recipe>> getUserRecipes() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         if (this.userRecipesList == null) {
             this.userRecipesList = this.localDb.recipesDao().getRecipesByUserId(userId);
             this.refreshUserRecipes(userId);
@@ -68,27 +73,22 @@ public class RecipeModel implements IRecipeModel {
         return this.recipesList;
     }
 
-    public Recipe getRecipe(String recipeId) {
-        if (this.recipesList == null) {
-            this.recipesList = this.localDb.recipesDao().getAll();
-            this.refreshAllRecipes();
-        }
-        for (Recipe recipe : this.recipesList.getValue()) {
-            if (recipe.getId().equals(recipeId)) {
-                return recipe;
-            }
-        }
-
-        return null;
-    }
-
     public void refreshAllRecipes() {
         EventRecipesListLoadingState.setValue(LoadingState.LOADING);
-        this.recipesFirebaseHandler.getAllRecipes((List<Recipe> recipes) -> {
+        Long localLastUpdate = Recipe.getLocalLastUpdate();
+
+        this.recipesFirebaseHandler.getAllRecipesSince(localLastUpdate, (List<Recipe> recipes) -> {
             executor.execute(() -> {
+                Long time = localLastUpdate;
+
                 for (Recipe recipe : recipes) {
                     localDb.recipesDao().insertAll(recipe);
+                    if (time < recipe.getLastUpdated()) {
+                        time = recipe.getLastUpdated();
+                    }
                 }
+
+                Recipe.setLocalLastUpdate(time);
                 EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
@@ -99,4 +99,12 @@ public class RecipeModel implements IRecipeModel {
         this.localDb.recipesDao().delete(recipe.id);
     }
 
+    public void deleteAllRecipesLocal() {
+        executor.execute(() -> {
+            this.localDb.recipesDao().deleteAll();
+            Recipe.setLocalLastUpdate(0L);
+            this.recipesList = null;
+            this.userRecipesList = null;
+        });
+    }
 }

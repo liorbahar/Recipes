@@ -6,6 +6,7 @@ import com.example.recipes.model.ModelClient;
 import com.example.recipes.dto.Recipe;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -24,8 +25,9 @@ public class RecipesFirebaseHandler implements IRecipesDBHandler {
         db.setFirestoreSettings(settings);
     }
 
-    public void getAllRecipes(ModelClient.Listener callback) {
+    public void getAllRecipesSince(Long since,ModelClient.Listener callback) {
         db.collection(Recipe.COLLECTION)
+                .whereGreaterThanOrEqualTo(Recipe.LAST_UPDATED, new Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

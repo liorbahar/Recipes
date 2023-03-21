@@ -13,37 +13,37 @@ import android.view.ViewGroup;
 
 import com.example.recipes.R;
 import com.example.recipes.databinding.FragmentUserRecipesListPageBinding;
+import com.example.recipes.dto.User;
 import com.example.recipes.fragments.recipes.views.UserRecipesListPageFragmentViewModel;
 import com.example.recipes.model.ModelClient;
-import com.example.recipes.model.RecipeModel;
 import com.example.recipes.dto.Recipe;
 import com.example.recipes.model.interfaces.LoadingState;
-import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 public class UserRecipesListPageFragment extends Fragment {
     private RecipesListFragment recipesListFragment;
     private UserRecipesListPageFragmentViewModel viewModel;
     private FragmentUserRecipesListPageBinding binding;
-    private String userUuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentUserRecipesListPageBinding.inflate(inflater,container, false);
+        binding = FragmentUserRecipesListPageBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         this.showRecipesList();
 
-        binding.swipeUserRecipesRefresh.setOnRefreshListener(()->{
-            ModelClient.instance().recipes.refreshUserRecipes(this.userUuid);
+        binding.swipeUserRecipesRefresh.setOnRefreshListener(() -> {
+            ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (User user) -> {
+                ModelClient.instance().recipes.refreshUserRecipes(user.getId());
+            });
         });
 
-        ModelClient.instance().recipes.getEventUserRecipesListLoadingState().observe(getViewLifecycleOwner(),status->{
+        ModelClient.instance().recipes.getEventUserRecipesListLoadingState().observe(getViewLifecycleOwner(), status -> {
             binding.swipeUserRecipesRefresh.setRefreshing(status == LoadingState.LOADING);
 
-            if (status == LoadingState.NOT_LOADING){
-                this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes)-> {
+            if (status == LoadingState.NOT_LOADING) {
+                this.viewModel.getRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
                     this.recipesListFragment.setRecipes(recipes);
                 });
             }

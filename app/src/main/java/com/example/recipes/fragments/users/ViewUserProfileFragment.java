@@ -40,6 +40,7 @@ public class ViewUserProfileFragment extends Fragment {
 
         binding.viewUserProfileSignoutBtn.setOnClickListener(view1 -> {
             ModelClient.instance().users.clearUser();
+            ModelClient.instance().recipes.deleteAllRecipesLocal();
             ModelClient.instance().users.signOutUser();
             Navigation.findNavController(view).navigate(R.id.action_viewUserProfileFragment_to_loginFragment);
         });

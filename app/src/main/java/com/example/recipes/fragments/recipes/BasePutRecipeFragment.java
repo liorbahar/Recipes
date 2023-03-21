@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -39,6 +40,10 @@ public class BasePutRecipeFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
     String recipeId = "";
+    Recipe recipe;
+    ProgressDialog pd;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,13 +75,15 @@ public class BasePutRecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentBasePutRecipeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        pd = new ProgressDialog(getActivity());
 
         try {
             recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
             ModelClient.instance().recipes.getAllRecipes().observe(getViewLifecycleOwner(), (List<Recipe> recipes) -> {
-                for (Recipe recipe : recipes) {
-                    if (recipe.getId().equals(recipeId)) {
-                        this.showRecipeDetails(recipe, binding);
+                for (Recipe recipeRes : recipes) {
+                    if (recipeRes.getId().equals(recipeId)) {
+                        this.recipe =recipeRes;
+                        this.showRecipeDetails(recipeRes, binding);
                     }
                 }
             });
@@ -89,8 +96,7 @@ public class BasePutRecipeFragment extends Fragment {
 
         binding.cancelBtn.setOnClickListener(view1 -> {
             Navigation.findNavController(view1).popBackStack();
-            Navigation.findNavController(view1).navigate(R.id.recipesListPageFragment);
-
+           Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });
         setHasOptionsMenu(true);
 
@@ -122,7 +128,8 @@ public class BasePutRecipeFragment extends Fragment {
         String body = binding.basePutRecipeBodyEt.getText().toString();
         String id = !recipeId.isEmpty() ? recipeId : UUID.randomUUID().toString();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Recipe recipe = new Recipe(id, name, body, userId, "");
+        String avatarUrl = this.recipe != null ?  this.recipe.getAvatarUrl() : "";
+        Recipe recipe = new Recipe(id, name, body, userId, avatarUrl);
 
         if (isAvatarSelected) {
             Bitmap bitmap = ImageHelper.getImageViewBitmap(binding.addrecipeAvatarImv);
@@ -138,7 +145,10 @@ public class BasePutRecipeFragment extends Fragment {
     }
 
     private void addRecipeAndNavigate(Recipe recipe, View view) {
+        pd.setMessage("Please wait...");
+        pd.show();
         ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
+            pd.dismiss();
             Navigation.findNavController(view).popBackStack();
             Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });

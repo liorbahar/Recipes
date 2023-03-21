@@ -3,11 +3,11 @@ package com.example.recipes.dto;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 import com.example.recipes.dto.interfaces.IImageModel;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 
 @Entity
@@ -68,6 +68,11 @@ public class User implements IImageModel {
     public String getEmail() {
         return email;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public String getAvatarUrl() {
         return avatarUrl;
