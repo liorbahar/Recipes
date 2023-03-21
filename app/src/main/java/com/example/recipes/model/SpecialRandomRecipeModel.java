@@ -1,8 +1,11 @@
 package com.example.recipes.model;
 
+import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.recipes.MyApplication;
+import com.example.recipes.R;
 import com.example.recipes.model.interfaces.ISpecialRandomRecipeModel;
 import com.example.recipes.dto.Recipe;
 import com.example.recipes.dto.api.RandomRecipeApiResult;
@@ -25,15 +28,17 @@ public class SpecialRandomRecipeModel implements ISpecialRandomRecipeModel {
     final private MutableLiveData<LoadingState> EventSpecialRandomRecipeLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
     public SpecialRandomRecipeModel(){
+       Context context = MyApplication.getMyContext();
+
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.spoonacular.com")
+                .baseUrl(context.getString(R.string.baseUrl))
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         recipeApi = retrofit.create(RecipeApi.class);
-        headers.put("x-api-key", "b990ced0509740359925d03e8206fa04");
+        headers.put("x-api-key", context.getString(R.string.apiKey));
     }
 
     public LiveData<Recipe> getRandomRecipe(ModelClient.Listener<Void> onFailedListener) {
