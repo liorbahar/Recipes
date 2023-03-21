@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -40,6 +41,8 @@ public class BasePutRecipeFragment extends Fragment {
     Boolean isAvatarSelected = false;
     String recipeId = "";
     Recipe recipe;
+    ProgressDialog pd;
+
 
 
     @Override
@@ -72,6 +75,7 @@ public class BasePutRecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentBasePutRecipeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        pd = new ProgressDialog(getActivity());
 
         try {
             recipeId = BasePutRecipeFragmentArgs.fromBundle(getArguments()).getRecipeId();
@@ -92,8 +96,7 @@ public class BasePutRecipeFragment extends Fragment {
 
         binding.cancelBtn.setOnClickListener(view1 -> {
             Navigation.findNavController(view1).popBackStack();
-            Navigation.findNavController(view1).navigate(R.id.recipesListPageFragment);
-
+           Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });
         setHasOptionsMenu(true);
 
@@ -142,7 +145,10 @@ public class BasePutRecipeFragment extends Fragment {
     }
 
     private void addRecipeAndNavigate(Recipe recipe, View view) {
+        pd.setMessage("Please wait...");
+        pd.show();
         ModelClient.instance().recipes.addRecipe(recipe, (unused) -> {
+            pd.dismiss();
             Navigation.findNavController(view).popBackStack();
             Navigation.findNavController(view).navigate(R.id.recipesUserListPageFragment);
         });

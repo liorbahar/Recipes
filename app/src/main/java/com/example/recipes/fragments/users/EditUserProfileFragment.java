@@ -1,5 +1,6 @@
 package com.example.recipes.fragments.users;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class EditUserProfileFragment extends Fragment {
     ActivityResultLauncher<String> galleryLauncher;
     Boolean isAvatarSelected = false;
     String avatarUrl = "";
+    ProgressDialog pd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class EditUserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentEditUserProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        pd = new ProgressDialog(getActivity());
 
         ModelClient.instance().users.getCurrentUser().observe(getViewLifecycleOwner(), (User user) -> {
             if (user != null) {
@@ -107,8 +110,13 @@ public class EditUserProfileFragment extends Fragment {
     }
 
     private void editUserAndNavigate(User user, View view) {
+        pd.setMessage("Please wait...");
+        pd.show();
+
         ModelClient.instance().users.editUser(user, (unused) -> {
+            pd.dismiss();
             ModelClient.instance().users.refreshCurrentUser();
+
             Navigation.findNavController(view).popBackStack();
             Navigation.findNavController(view).navigate(R.id.viewUserProfileFragment);
         });
