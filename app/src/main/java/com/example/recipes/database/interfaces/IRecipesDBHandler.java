@@ -6,7 +6,7 @@ import com.example.recipes.model.ModelClient;
 import java.util.List;
 
 public interface IRecipesDBHandler {
-    void getAllRecipes(ModelClient.Listener<List<Recipe>> callback);
+    void getAllRecipesSince(Long since, ModelClient.Listener<List<Recipe>> callback);
 
     void getRecipesOfUser(String userId, ModelClient.Listener<List<Recipe>> callback);
 

@@ -1,8 +1,10 @@
 package com.example.recipes.model;
 
 import java.util.concurrent.Executor;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.recipes.database.RecipesFirebaseHandler;
 import com.example.recipes.database.interfaces.IRecipesDBHandler;
 import com.example.recipes.model.interfaces.IRecipeModel;
@@ -70,11 +72,20 @@ public class RecipeModel implements IRecipeModel {
 
     public void refreshAllRecipes() {
         EventRecipesListLoadingState.setValue(LoadingState.LOADING);
-        this.recipesFirebaseHandler.getAllRecipes((List<Recipe> recipes) -> {
+        Long localLastUpdate = Recipe.getLocalLastUpdate();
+
+        this.recipesFirebaseHandler.getAllRecipesSince(localLastUpdate, (List<Recipe> recipes) -> {
             executor.execute(() -> {
+                Long time = localLastUpdate;
+
                 for (Recipe recipe : recipes) {
                     localDb.recipesDao().insertAll(recipe);
+                    if (time < recipe.getLastUpdated()) {
+                        time = recipe.getLastUpdated();
+                    }
                 }
+
+                Recipe.setLocalLastUpdate(time);
                 EventRecipesListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });

@@ -47,7 +47,7 @@ public class Recipe implements IImageModel {
     static final String USERID = "userId";
     static final String AVATAR = "avatar";
     public static final String COLLECTION = "recipes";
-    static final String LAST_UPDATED = "lastUpdated";
+    public static final String LAST_UPDATED = "lastUpdated";
     static final String LOCAL_LAST_UPDATED = "recipes_local_last_update";
 
     public static Recipe fromJson(Map<String, Object> json) {
