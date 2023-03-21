@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.recipes.fragments.authentication.LogInFragment"
+        android:label="login page"
+        tools:layout="@layout/fragment_log_in">
+        <action
+            android:id="@+id/action_loginFragment_to_recipesListPageFragment"
+            app:destination="@id/recipesListPageFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.recipes.fragments.authentication.RegisterFragment"
+        android:label="register page"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_recipesListPageFragment"
+            app:destination="@id/recipesListPageFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipesListPageFragment"
+        android:name="com.example.recipes.fragments.recipes.RecipesListPageFragment"
+        android:label="All Recipes List"
+        tools:layout="@layout/fragment_recipes_list_page">
+        <action
+            android:id="@+id/action_recipesListPageFragment_to_ViewRecipesFragment"
+            app:destination="@id/viewRecipesFragment" />
+        <action
+            android:id="@+id/action_recipesListPageFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipesUserListPageFragment"
+        android:name="com.example.recipes.fragments.recipes.UserRecipesListPageFragment"
+        android:label="My Recipes List"
+        tools:layout="@layout/fragment_user_recipes_list_page">
+        <action
+            android:id="@+id/action_recipesListFragment_to_EditRecipesFragment"
+            app:destination="@id/editRecipesFragment" />
+        <action
+            android:id="@+id/action_userRecipesListFragment_to_ViewRecipesFragment"
+            app:destination="@id/viewRecipesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRecipeFragment"
+        android:name="com.example.recipes.fragments.recipes.BasePutRecipeFragment"
+        android:label="Add Recipe"
+        tools:layout="@layout/fragment_base_put_recipe" />
+    <fragment
+        android:id="@+id/editRecipesFragment"
+        android:name="com.example.recipes.fragments.recipes.BasePutRecipeFragment"
+        android:label="Edit Recipe"
+        tools:layout="@layout/fragment_base_put_recipe">
+        <argument
+            android:name="recipeId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewRecipesFragment"
+        android:name="com.example.recipes.fragments.recipes.ViewRecipeFragment"
+        android:label="View Recipe"
+        tools:layout="@layout/fragment_view_recipe">
+        <argument
+            android:name="recipeId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewUserProfileFragment"
+        android:name="com.example.recipes.fragments.users.ViewUserProfileFragment"
+        android:label="View Profile"
+        tools:layout="@layout/fragment_view_user_profile">
+        <action
+            android:id="@+id/action_viewUserProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_viewUserProfileFragment_to_editUserProfileFragment"
+            app:destination="@id/editUserProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.example.recipes.fragments.users.EditUserProfileFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_user_profile" />
+    <fragment
+        android:id="@+id/specialRecipe"
+        android:name="com.example.recipes.fragments.recipes.SpecialRandomRecipeFragment"
+        android:label="Special Recipe"
+        tools:layout="@layout/fragment_special_random_recipe" />
+</navigation>

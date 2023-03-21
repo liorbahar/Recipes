@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recipesListPageFragment"
+        android:icon="@drawable/open_book"
+        android:title="All Recipes" />
+    <item
+        android:id="@+id/recipesUserListPageFragment"
+        android:icon="@android:drawable/btn_star"
+        android:title="My Recipes" />
+    <item
+        android:id="@+id/addRecipeFragment"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Add" />
+    <item
+        android:id="@+id/specialRecipe"
+        android:icon="@drawable/surprise"
+        android:title="Special Recipe" />
+    <item
+        android:id="@+id/viewUserProfileFragment"
+        android:icon="@drawable/user_profile_avatar"
+        android:title="Profile" />
+</menu>
