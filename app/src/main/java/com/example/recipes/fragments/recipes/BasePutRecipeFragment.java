@@ -91,7 +91,7 @@ public class BasePutRecipeFragment extends Fragment {
         }
 
         binding.saveBtn.setOnClickListener(view1 -> {
-            this.onSaveStudentClick(binding, view1);
+            this.onSaveRecipeClick(binding, view1);
         });
 
         binding.cancelBtn.setOnClickListener(view1 -> {
@@ -123,7 +123,7 @@ public class BasePutRecipeFragment extends Fragment {
         ImageHelper.insertImageByUrl(recipe, binding.addrecipeAvatarImv);
     }
 
-    private void onSaveStudentClick(FragmentBasePutRecipeBinding binding, View view) {
+    private void onSaveRecipeClick(FragmentBasePutRecipeBinding binding, View view) {
         String name = binding.basePutRecipeNameEt.getText().toString();
         String body = binding.basePutRecipeBodyEt.getText().toString();
         String id = !recipeId.isEmpty() ? recipeId : UUID.randomUUID().toString();
